@@ -1,0 +1,312 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<title></title>
+		
+	</head>
+	
+	
+ <link rel="stylesheet" type="text/css" href="../../js/jQueryPage20161027/src/jquery.page.css">
+   
+<style type="text/css">
+	 .box_p p{
+	 	 font-size: 14px;
+	 } 
+	 #shuju{
+	 	 width: 700px;
+	 	 height: 500px;
+	 	 background: lightcyan;
+	 	 margin: auto;
+	 }
+	 #cha{
+	 	 width: 80px;
+	 	 height: 40px;
+	 	 
+	 }
+	 #ida{
+	 	color: red;
+	 	position: absolute;
+	 	left: 600px;
+	 }
+	 #pas{
+	 	width: 100%;
+	 	position: relative;
+	 	transition: 0.2s;
+	 	margin: 0;
+	 	height: 34px;
+	 	line-height: 34px;
+	 }
+	 #pas:hover{
+	 	 background: darkgray;
+	 }
+</style>
+<body>
+<!--<form action="http://127.0.0.1:8081/process_get" method="GET">
+First Name: <input type="text" name="first_name">  <br>
+ 
+Last Name: <input type="text" name="last_name">
+<input type="submit" value="Submit">
+</form>
+<br />
+<br />
+<br />
+
+<input type="text" name="" id="x" placeholder="001" />
+<input type="text" name="" id="y" placeholder="002" />
+<button id="btn">deng</button>
+
+
+<h3>文件上传：</h3>
+选择一个文件上传: <br />
+<form action="http://127.0.0.1:8081/file_upload" method="post" enctype="multipart/form-data">
+<input type="file" name="image" size="50" />
+<br />
+<input type="submit" value="上传文件" />
+</form>
+
+<br />
+<br />
+<br />-->
+
+<div id="login" style="background: beige;">
+<h1>登录</h1>
+
+    <input type="text" name="name" id="name" placeholder="用户名" /><br /><br />
+    <input type="text" name="password" id="password" placeholder="密码" /><br /><br />
+    <button id="log">登录</button>
+</div>
+
+<div id="loginsa" >
+<div id="login" style="background:yellowgreen;">
+<h2>新增</h2>
+<a >name:</a><input type="text" name="name1" id="name1" value="" />
+<a >password:</a><input type="text" name="password1" id="password1" value="" />
+<button id="deng">确认</button>
+
+<br />
+<br />
+</div>
+<br />
+ 
+ 	
+ <div id="shuju" style="position: relative;">
+ <button id="cha">刷新</button>
+   <div class="box_p" style="height: 320px;"></div>
+  
+  <div id="page" style="margin-top: 50px;"></div>
+ </div>	
+ 
+ 
+</div>	   
+</body>
+</html>
+
+<script
+  src="http://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <script src="../js/md5.js" type="text/javascript"></script>
+   
+<script src="../../js/jQueryPage20161027/src/jquery.page.js"></script>
+<script type="text/javascript">
+    var zuida = 0;
+	var qian = 0;
+	var pageNo = 1;
+	var active = ''
+	
+function cha_xun(){
+		
+   $.ajax({
+    url:"http://127.0.0.1:8081/select_id",  //ajax请求地址
+    cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
+    type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
+    dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
+    data:{
+    	login_token:sessionStorage.login_token,
+    	pageSize:10,
+    	pageNo:pageNo
+      },
+     success: function(data,textStatus){//请求成功
+        //this 调用本次AJAX请求时传递的options参数 ,如果设置context来改变了this，那这里的this就是改变过的
+        if(data.data){
+//      	console.log(data)
+           $('.box_p').children().filter("p").remove();
+           active = data.data
+          var as = data.data
+          zuida = data.act
+          for(i in as){
+          	var index = i
+        	$('.box_p').append(`<p id='pas'>`+as[i].name+`<a index=`+index+` onclick='dian(this)' href='#' id='ida'>删除</a></p>`);
+           }
+          if(zuida==11||zuida==10){
+          	  fen(data.act);
+          }
+            
+        }else{
+        	 console.log(data);
+        	 var mymessage=confirm('身份过期需要重新登录，是否跳转登录页？');
+        	 if(mymessage==true){
+        	 	 window.open(window.location.href);     
+        	 }
+        }
+     },
+     error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败
+        console.log(XMLHttpRequest,textStatus,errorThrown)
+        }
+     });
+   };
+   
+   function dian(indexs){//删除功能
+   	     let i = indexs.getAttribute("index");
+   	 var mymessage=confirm("你确定要删除"+active[i].name+'吗？');
+    if(mymessage==true){
+            $.ajax({
+    url:"http://127.0.0.1:8081/delect",  //ajax请求地址
+    cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
+    type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
+    dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
+    data:{
+    	id:active[i].id,
+    	login_token:sessionStorage.login_token
+      },
+     success: function(data,textStatus){//请求成功
+          if(data.message==200){
+        	 alert('删除成功') 
+        	 cha_xun()
+         }else{
+         	 alert('发生了错误')
+         }
+     },
+     error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败
+        console.log(XMLHttpRequest,textStatus,errorThrown)
+        }
+      });
+    }
+   	     
+   }
+		
+   
+	function ade(){
+		 if(sessionStorage.login_token){
+		 	 $('#login').hide();
+		 	 $('#loginsa').show();
+		 	 cha_xun()
+		 }else{
+		 	  $('#login').show();
+		 	 $('#loginsa').hide();
+		 }
+	};ade();
+	
+	$('#log').click(function(){
+		console.log(11111111111)
+   $.ajax({
+    url:"http://127.0.0.1:8081/login",  //ajax请求地址
+    cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
+    type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
+    dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
+    data:{
+    	name:$('#login #name').val(),
+    	password:$('#login #password').val(),
+    	tokenid:hex_md5('qq2443611475')
+      },
+     success: function(data,textStatus){//请求成功
+        //this 调用本次AJAX请求时传递的options参数 ,如果设置context来改变了this，那这里的this就是改变过的
+        console.log(data);
+        if(data.message==200){
+        	sessionStorage.login_token = data.data;
+//          console.log(sessionStorage.login_token);
+            alert('登录成功')
+            $('#login #name').val('');
+            $('#login #password').val('')
+            $('#login').hide();
+            $('#loginsa').show();
+            cha_xun();
+            //刷新页面  使==》底部分页按钮加载完成
+            location.replace(document.referrer)
+        }
+        
+     },
+     error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败
+        console.log(XMLHttpRequest,textStatus,errorThrown)
+        }
+      });
+	});
+	
+   
+   
+   $('#cha').click(function(){
+   	    if(sessionStorage.login_token){
+   		    cha_xun() 
+     	}else{
+     		alert('未登录');
+     	}
+	});
+   
+  $('#deng').click(function(){
+   if(sessionStorage.login_token){
+   	 $.ajax({
+    url:"http://127.0.0.1:8081/create_name",  //ajax请求地址
+    cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
+    type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
+    dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
+    data:{
+    	login_token:sessionStorage.login_token,
+    	name:$('#name1').val(),
+    	password:$('#password1').val()
+    },
+     success: function(data,textStatus){//请求成功
+        //this 调用本次AJAX请求时传递的options参数 ,如果设置context来改变了this，那这里的this就是改变过的
+        console.log(data);
+        if(data.message==200){
+        	 alert('添加成功')
+        	 cha_xun();
+        }
+     },
+     error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败
+        console.log(XMLHttpRequest,textStatus,errorThrown)
+        }
+      });
+    }else{
+    	alert('未登录')
+    }
+   
+	});
+  
+  function fen(i){
+  	
+  	$("#page").Page({
+    totalPages: Math.ceil(i/10),//total Pages
+    liNums: 7,//the li numbers(advice use odd)
+    activeClass: 'activP', //active class style
+    firstPage: '首页',//first button name
+    lastPage: '末页',//last button name
+    prv: '<',//prev button name
+    next: '>',//next button name
+    hasFirstPage: true,//whether has first button
+    hasLastPage: true,//whether has last button
+    hasPrv: true,//whether has prev button
+    hasNext: true,//whether has next button
+    callBack : function(page){
+        //callBack function，page:active page
+       if(page){
+       	 pageNo = page;
+         cha_xun()
+       }
+        
+      }
+   });
+  } 
+  
+   
+ 
+   window.setTimeout(function(){
+   	fen(zuida)
+   	console.log('底部分页准备完成')
+   	
+   }, 100);
+  
+	
+	
+</script>
