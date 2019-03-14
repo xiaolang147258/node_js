@@ -59,7 +59,8 @@ app.post('/login',function(req,res){
 	 connection.query(seleactive, function(err, rows) {
     	   if (err) throw err;
     	   var act = '1'
-    	   var a = false
+    	   var a = false;
+    	   console.log(rows);
    	   for(var i=0;i<rows.length;i++){
    	   	   if(req.body.name==rows[i].name){
    	   	   	   act = rows[i];
@@ -77,6 +78,7 @@ app.post('/login',function(req,res){
     	    }
            res.end(JSON.stringify(response))
    	   }else{
+   	   	 
    	   	  if(md5(req.body.password) == act.password){
    	   	  	   login_token = md5(req.body.name + req.body.password + new Date())
     		   response={
@@ -148,27 +150,41 @@ app.post('/process_get', function (req, res) {
 // });
 //})
 //=============================================================================================================================================================================
-app.post('/create_name', function(req,res){
+app.post('/create_name', function(req,res){//新增
 	/*处理浏览器同源策略(跨域)问题*/
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('Access-Control-Allow-Headers', 'Content-Type');
    if(login_token==req.body.login_token){
-      var ad = {
+   	  
+// 	 var connection = mysql.createConnection(settings.db);
+//   connection.connect();
+     
+     var users = {
       	    id:'0',
       	    name:req.body.name,
       	    password:md5(req.body.password),
       	    date:new Date()
       }
-      user.saver(ad,'x003'); 
      
-      response={
+//   var seleactive = 'insert into x003 values(0,'+req.body.name+','+md5(req.body.password)+','+new Date()+');' 
+//	 connection.query(seleactive, function(err,rows) {
+//  	   if (err) throw err;
+   	       
+// 	       console.log(rows);
+   	       
+// 	 })
+      
+     user.saver(users,'x003'); 
+     response={
     		 message:'200',
     		 filename:'ok！',
-    		 ader:ad   
+    		 ader:users
     	};
+      
       res.end(JSON.stringify(response));
+      
     }else{
     	response={
     		 message:'300',
@@ -245,6 +261,37 @@ var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
        res.end(JSON.stringify(response))
     }
 })
+
+ //=============================================================================================================================================================================
+//修改功能   
+ app.post('/update',function(req,res){
+	/*处理浏览器同源策略(跨域)问题*/
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+     
+    if(login_token == req.body.login_token){
+        
+    	user.xiu({id:req.body.id,name:req.body.name},'x003');
+    	response={
+    		 message:'200',
+    		 filename:'修改成功',
+    		 mu:{id:req.body.id,name:req.body.name}
+    	}
+       res.end(JSON.stringify(response))
+    }else{
+    	response={
+    		 message:'300',
+    		 filename:'no',
+    	}
+       res.end(JSON.stringify(response))
+    }
+})
+
+
+
+
 
 
 var server = app.listen(8081, function(){

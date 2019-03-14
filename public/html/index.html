@@ -38,9 +38,47 @@
 	 	height: 34px;
 	 	line-height: 34px;
 	 }
+	 #pas p{
+	 	 float: left;
+	 }
 	 #pas:hover{
 	 	 background: darkgray;
 	 }
+	 #psas{
+	 	/*float: left;*/
+	 }
+	 .name_ps{
+	 	 width: 120px;
+	 	 height: 100%;
+	 	 /*background: red;*/
+	 	 margin: 0;
+	 	 padding-left: 10px;
+	 	 overflow: hidden;
+         text-overflow:ellipsis;
+         white-space: nowrap;
+         
+	 }
+	 .name_ps2{
+	 	 width: 250px;
+	 	 height: 100%;
+	 	 /*background: red;*/
+	 	 margin: 0;
+	 	 overflow: hidden;
+         text-overflow:ellipsis;
+         white-space: nowrap; 
+         margin-left: 100px;
+         color: blue;
+	 }
+	 
+	 .inp{
+	 	 width: 120px;
+	 	 height: 100%;
+	 	 margin: 0;
+	 	 padding-left: 10px;
+	 	 float: left;
+	 	 display: none;
+	 }
+	 
 </style>
 <body>
 <!--<form action="http://127.0.0.1:8081/process_get" method="GET">
@@ -92,7 +130,7 @@ Last Name: <input type="text" name="last_name">
  
  	
  <div id="shuju" style="position: relative;">
- <button id="cha">刷新</button>
+ <!--<button id="cha">刷新</button>-->
    <div class="box_p" style="height: 320px;"></div>
   
   <div id="page" style="margin-top: 50px;"></div>
@@ -103,10 +141,8 @@ Last Name: <input type="text" name="last_name">
 </body>
 </html>
 
-<script
-  src="http://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+<script src="../js/jquery-3.3.1.js"></script>
+
   <script src="../js/md5.js" type="text/javascript"></script>
    
 <script src="../../js/jQueryPage20161027/src/jquery.page.js"></script>
@@ -124,21 +160,29 @@ function cha_xun(){
     type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
     dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
     data:{
-    	login_token:sessionStorage.login_token,
+    	login_token:localStorage.login_token,
     	pageSize:10,
     	pageNo:pageNo
       },
      success: function(data,textStatus){//请求成功
         //this 调用本次AJAX请求时传递的options参数 ,如果设置context来改变了this，那这里的this就是改变过的
         if(data.data){
-//      	console.log(data)
+        	console.log(data,'获取到的数据')
            $('.box_p').children().filter("p").remove();
            active = data.data
           var as = data.data
-          zuida = data.act
+          zuida = data.act;
+          $(".box_p").empty();
           for(i in as){
-          	var index = i
-        	$('.box_p').append(`<p id='pas'>`+as[i].name+`<a index=`+index+` onclick='dian(this)' href='#' id='ida'>删除</a></p>`);
+          	var index = i;
+          	
+        	$('.box_p').append(`<div id='pas'>
+        	     <p onclick='p_click(this)' class='name_ps'  data_index=`+index+` >`+as[i].name+`</p>
+        	      <input type="text"  class="inp" value=`+as[i].name+` onkeydown='p_key(event,this)' onblur='inp_blur(this)' data_index=`+index+` />
+        	     <p class='name_ps2'>`+as[i].date+`</p>
+        	     <a index=`+index+` onclick='dian(this)' href='#' id='ida'>删除</a>
+        	</div>`);
+        	
            }
           if(zuida==11||zuida==10){
           	  fen(data.act);
@@ -148,7 +192,8 @@ function cha_xun(){
         	 console.log(data);
         	 var mymessage=confirm('身份过期需要重新登录，是否跳转登录页？');
         	 if(mymessage==true){
-        	 	 window.open(window.location.href);     
+        	 	  localStorage.login_token='';
+        	 	  location.reload() 	             
         	 }
         }
      },
@@ -157,6 +202,56 @@ function cha_xun(){
         }
      });
    };
+   
+    
+    	 
+   function p_click(indexs){//点击昵称执行修改操作
+   	   let index = indexs.getAttribute("data_index")
+   	   $('.name_ps').eq(index).hide();
+   	   $('.inp').eq(index).show(); 
+   	   $('.inp').eq(index).focus();
+   }
+   
+   function inp_blur(indexs){
+   	   let index = indexs.getAttribute("data_index");    
+   	   $('.name_ps').eq(index).show();
+   	   $('.inp').eq(index).hide(); 
+   };
+
+   function p_key(event,inde){//输入框    点击回车按钮事件
+   	   let index = inde.getAttribute("data_index");
+   	   
+   	   if(event.keyCode==13){
+   	   	   $.ajax({
+       	   	   url:"http://127.0.0.1:8081/update",  //ajax请求地址
+       	   	   cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
+       	   	   type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
+       	   	   dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
+       	   	   data:{
+    	   	   	   id:active[index].id,
+    	   	   	   login_token:localStorage.login_token,
+    	   	   	   name:$('.inp').eq(index).val()
+         	   	   },
+        	   	   success: function(data,textStatus){//请求成功
+             	   	   if(data.message==200){
+        	    	   	   alert('修改成功') 
+        	    	   	   cha_xun()
+        	    	   	   $('.name_ps').eq(index).show();
+   	                       $('.inp').eq(index).hide(); 
+            	   	   }else{
+         	    	   	   alert('发生了错误')
+            	   	   }
+        	   	   },
+        	   	   error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败
+           	   	   console.log(XMLHttpRequest,textStatus,errorThrown)
+           	   	   }
+         	   	   });
+   	   }
+   }
+   
+   
+   
+   
    
    function dian(indexs){//删除功能
    	     let i = indexs.getAttribute("index");
@@ -169,7 +264,7 @@ function cha_xun(){
     dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
     data:{
     	id:active[i].id,
-    	login_token:sessionStorage.login_token
+    	login_token:localStorage.login_token
       },
      success: function(data,textStatus){//请求成功
           if(data.message==200){
@@ -189,14 +284,18 @@ function cha_xun(){
 		
    
 	function ade(){
-		 if(sessionStorage.login_token){
+		 if(localStorage.login_token!=''){
+//		 	
+		 	 console.log(123)
+//		 	
 		 	 $('#login').hide();
 		 	 $('#loginsa').show();
 		 	 cha_xun()
 		 }else{
 		 	  $('#login').show();
-		 	 $('#loginsa').hide();
+		 	  $('#loginsa').hide();
 		 }
+		 
 	};ade();
 	
 	$('#log').click(function(){
@@ -215,8 +314,8 @@ function cha_xun(){
         //this 调用本次AJAX请求时传递的options参数 ,如果设置context来改变了this，那这里的this就是改变过的
         console.log(data);
         if(data.message==200){
-        	sessionStorage.login_token = data.data;
-//          console.log(sessionStorage.login_token);
+        	
+        	localStorage.login_token = data.data;
             alert('登录成功')
             $('#login #name').val('');
             $('#login #password').val('')
@@ -225,6 +324,8 @@ function cha_xun(){
             cha_xun();
             //刷新页面  使==》底部分页按钮加载完成
             location.replace(document.referrer)
+        }else{
+        	 console.log(data);
         }
         
      },
@@ -237,7 +338,7 @@ function cha_xun(){
    
    
    $('#cha').click(function(){
-   	    if(sessionStorage.login_token){
+   	    if(localStorage.login_token){
    		    cha_xun() 
      	}else{
      		alert('未登录');
@@ -245,20 +346,20 @@ function cha_xun(){
 	});
    
   $('#deng').click(function(){
-   if(sessionStorage.login_token){
+   if(localStorage.login_token){
    	 $.ajax({
     url:"http://127.0.0.1:8081/create_name",  //ajax请求地址
     cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
     type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
     dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
     data:{
-    	login_token:sessionStorage.login_token,
+    	login_token:localStorage.login_token,
     	name:$('#name1').val(),
     	password:$('#password1').val()
     },
      success: function(data,textStatus){//请求成功
         //this 调用本次AJAX请求时传递的options参数 ,如果设置context来改变了this，那这里的this就是改变过的
-        console.log(data);
+        console.log(data,'增加');
         if(data.message==200){
         	 alert('添加成功')
         	 cha_xun();

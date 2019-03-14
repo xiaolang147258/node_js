@@ -31,7 +31,7 @@ pool.getConnection(function(err,connection){//connection链接
 
 //新建
 user.saver = function(user,ad){
-	var saversql='insert into '+ad+' values(?,?,?,?)';
+	var saversql='insert into '+ad+' values(?,?,?,?);'
 	happy(saversql,[user.id,user.name,user.password,user.date])
 }
 //user.saver({id:0,name:"把阿布",age:"99",birth:"1997/03/05"},"mm")
