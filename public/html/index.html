@@ -15,10 +15,11 @@
 	 	 font-size: 14px;
 	 } 
 	 #shuju{
-	 	 width: 700px;
+	 	 width: 50%;
 	 	 height: 500px;
 	 	 background: lightcyan;
-	 	 margin: auto;
+	 	 /* margin: auto; */
+		 margin-top: 10px;
 	 }
 	 #cha{
 	 	 width: 80px;
@@ -108,7 +109,7 @@ Last Name: <input type="text" name="last_name">
 <br />
 <br />-->
 
-<div id="login" style="background: beige;">
+<div id="login" style="background: beige;padding: 20px;">
 <h1>登录</h1>
 
     <input type="text" name="name" id="name" placeholder="用户名" /><br /><br />
@@ -117,7 +118,7 @@ Last Name: <input type="text" name="last_name">
 </div>
 
 <div id="loginsa" >
-<div id="login" style="background:yellowgreen;">
+<div id="login" style="background:yellowgreen;padding: 10px;">
 <h2>新增</h2>
 <a >name:</a><input type="text" name="name1" id="name1" value="" />
 <a >password:</a><input type="text" name="password1" id="password1" value="" />
@@ -126,15 +127,21 @@ Last Name: <input type="text" name="last_name">
 <br />
 <br />
 </div>
-<br />
+<!-- <br /> -->
  
- 	
- <div id="shuju" style="position: relative;">
+<div style="width: 100%;">
+  <div id="shuju" style="position: relative;float: left;">
  <!--<button id="cha">刷新</button>-->
    <div class="box_p" style="height: 320px;"></div>
-  
-  <div id="page" style="margin-top: 50px;"></div>
- </div>	
+   <div id="page" style="margin-top: 50px;"></div>
+ </div>
+ 
+ <div id="shuju" style="position: relative;float:right;width:49%;">
+ 
+ </div>
+ 
+</div> 	
+ 	
  
  
 </div>	   
@@ -175,19 +182,17 @@ function cha_xun(){
           $(".box_p").empty();
           for(i in as){
           	var index = i;
-          	
+			var datasa = new Date(as[i].date).getFullYear()+` / `+(new Date(as[i].date).getMonth()+1)+` / `+new Date(as[i].date).getDate()+`-`+new Date(as[i].date).getHours()+`:`+new Date(as[i].date).getMinutes()
         	$('.box_p').append(`<div id='pas'>
         	     <p onclick='p_click(this)' class='name_ps'  data_index=`+index+` >`+as[i].name+`</p>
         	      <input type="text"  class="inp" value=`+as[i].name+` onkeydown='p_key(event,this)' onblur='inp_blur(this)' data_index=`+index+` />
-        	     <p class='name_ps2'>`+as[i].date+`</p>
+        	     <p class='name_ps2'>`+datasa+`</p>
         	     <a index=`+index+` onclick='dian(this)' href='#' id='ida'>删除</a>
         	</div>`);
-        	
            }
           if(zuida==11||zuida==10){
           	  fen(data.act);
           }
-            
         }else{
         	 console.log(data);
         	 var mymessage=confirm('身份过期需要重新登录，是否跳转登录页？');
@@ -249,10 +254,6 @@ function cha_xun(){
    	   }
    }
    
-   
-   
-   
-   
    function dian(indexs){//删除功能
    	     let i = indexs.getAttribute("index");
    	 var mymessage=confirm("你确定要删除"+active[i].name+'吗？');
@@ -298,8 +299,10 @@ function cha_xun(){
 		 
 	};ade();
 	
+	
+	
 	$('#log').click(function(){
-		console.log(11111111111)
+		
    $.ajax({
     url:"http://127.0.0.1:8081/login",  //ajax请求地址
     cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
@@ -325,9 +328,8 @@ function cha_xun(){
             //刷新页面  使==》底部分页按钮加载完成
             location.replace(document.referrer)
         }else{
-        	 console.log(data);
+        	alert(data.filename);
         }
-        
      },
      error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败
         console.log(XMLHttpRequest,textStatus,errorThrown)
@@ -363,6 +365,8 @@ function cha_xun(){
         if(data.message==200){
         	 alert('添加成功')
         	 cha_xun();
+			 $('#name1').val('');
+			 $('#password1').val('')
         }
      },
      error:function(XMLHttpRequest, textStatus, errorThrown){//请求失败

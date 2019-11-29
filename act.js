@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var multer  = require('multer');
 
 var user = require('./zsgc.js');
-var settings = require('./setting.js');
+// var settings = require('./setting.js');
 
 var md5 = function(data) {
     var Buffer = require("buffer").Buffer;
@@ -33,122 +33,81 @@ app.get('/index', function (req, res) {
 
 var shu = '1'
 function ad(){//查询所有的数据
-	 var connection = mysql.createConnection(settings.db);
-     connection.connect();
-     var seleactive = `select * from x003;` 
-	 connection.query(seleactive, function(err, rows) {
-    	   if (err) throw err;
-    	   shu = rows
-     })
-     connection.end();
+	 // var connection = mysql.createConnection(settings.db);
+     // connection.connect();
+     var seleactive = `select * from x003;`;
+	 // connection.query(seleactive, function(err, rows) {
+  //   	   if (err) throw err;
+  //   	   shu = rows
+  //    })
+	 user.pool.getConnection((err,connection)=>{//connection链接
+	    if(err){console.log('---:'+err);return}
+	 	 connection.query(seleactive,(err,data)=>{//data是执行完操作之后mysql给予的响应结果
+	 	  	if(err) throw err;
+	 		shu = data;
+	 	  	connection.release()//释放链接
+	 	  })
+	   })
+     // connection.end();
 }
 
  //=============================================================================================================================================================================
-//登录功能//var selectSQL_login = 'select * from x003 where name='+req.body.name
+//登录功能//
 var login_token = '';
-app.post('/login',function(req,res){
+app.post('/login',(req,res)=>{
 	/*处理浏览器同源策略(跨域)问题*/
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('Access-Control-Allow-Headers', 'Content-Type');
    if(tokenid_md5==req.body.tokenid){
-   	 var connection = mysql.createConnection(settings.db);
-     connection.connect();
-     var seleactive = `select * from x003;` 
-	 connection.query(seleactive, function(err, rows) {
-    	   if (err) throw err;
-    	   var act = '1'
-    	   var a = false;
-    	   console.log(rows);
-   	   for(var i=0;i<rows.length;i++){
-   	   	   if(req.body.name==rows[i].name){
-   	   	   	   act = rows[i];
-   	   	   	   a = true;
-   	   	   	   break;
-   	   	   }else{
-   	   	   	   act = '1'
-   	   	   }
-   	     }
-     if(a){
-   	   if(act=='1'){
-   	   	   response={
-    		   message:'301',
-    		   filename:'用户不存在'
-    	    }
-           res.end(JSON.stringify(response))
-   	   }else{
-   	   	 
-   	   	  if(md5(req.body.password) == act.password){
-   	   	  	   login_token = md5(req.body.name + req.body.password + new Date())
-    		   response={
-    		      message:'200',
-    		      filename:'ok',
-    		      data:login_token
-    	        }
-               res.end(JSON.stringify(response))
-   	   	  }else{
-   	   	  	  response={
-    		   message:'302',
-    		   filename:'密码不正确'
-    	      }
-             res.end(JSON.stringify(response))
-   	   	   }
-   	     }
-       }
-     })
-     connection.end();
+		   user.pool.getConnection((err,connection)=>{//connection链接
+		      if(err){
+		        console.log('---:'+err);
+		        return;
+		      }
+		   	  if(err) throw err;
+		   	  connection.query('select * from x003 where name=?',req.body.name,(err,data)=>{//data是执行完操作之后mysql给予的响应结果
+		   	  	if(err) throw err;
+		   		console.log(data);
+				if(data.length==0){
+							   	 response={
+							   	 		   message:'301',
+							   	 		   filename:'用户不存在'
+							   	 	    }
+							   	 res.end(JSON.stringify(response))
+				                
+				}else{
+							     // console.log(md5(req.body.password),data[0].password);
+							   	 if(md5(req.body.password) == data[0].password){
+							   	  	       login_token = data[0].id;
+							       		   response={
+							       		      message:'200',
+							       		      filename:'ok',
+							       		      data:login_token
+							       	        }
+							           res.end(JSON.stringify(response))
+							   	  }else{
+							   	  	  response={
+							       		   message:'302',
+							       		   filename:'密码不正确',
+										   req_body:req.body
+							       	      }
+							         res.end(JSON.stringify(response))
+							   	   }   
+				}
+		   	  	connection.release()//释放链接
+		   	  })
+		     })
    }else{
    	   response={
     		   message:'300',
     		   filename:'no',
     	    }
-       res.end(JSON.stringify(response))
+	   res.end(JSON.stringify(response))
    }
 })
 
-//=============================================================================================================================================================================
-app.post('/process_get', function (req, res) {
-	/*处理浏览器同源策略(跨域)问题*/
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-   // 输出 JSON 格式
-   var response = {
-       "first_name":req.body.first_name,//post请求通过  req.body 获取前端请求发送的数据，get请求通过 req.query 获取前端请求发送的数据
-       "last_name":req.body.last_name
-   };
-   console.log(response);
-   res.end(JSON.stringify(response));
-})
-
-//=============================================================================================================================================================================
-//app.post('/file_upload', function (req, res) {
-//  /*处理浏览器同源策略(跨域)问题*/
-//  res.header("Access-Control-Allow-Origin", "*");
-//  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-//  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//  res.header('Access-Control-Allow-Headers', 'Content-Type');
-//  
-// console.log(req.files[0].path+'----'+req.files[0].originalname); // 上传的文件信息
-// 
-// var des_file = __dirname + "/public/img/" + req.files[0].originalname;
-// fs.readFile( req.files[0].path, function (err, data) {
-//      fs.writeFile(des_file, data, function (err){
-//       if( err ){
-//            console.log(err);
-//       }else{
-//             response = {
-//                 message:'File uploaded successfully', 
-//                 filename:des_file
-//            };
-//        }
-//        console.log( response );
-//        res.end(JSON.stringify(response));
-//     });
-// });
-//})
 //=============================================================================================================================================================================
 app.post('/create_name', function(req,res){//新增
 	/*处理浏览器同源策略(跨域)问题*/
@@ -157,34 +116,28 @@ app.post('/create_name', function(req,res){//新增
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('Access-Control-Allow-Headers', 'Content-Type');
    if(login_token==req.body.login_token){
-   	  
-// 	 var connection = mysql.createConnection(settings.db);
-//   connection.connect();
-     
+	  let login_token = md5(req.body.name+req.body.password+new Date());
      var users = {
-      	    id:'0',
+      	    id:login_token,
       	    name:req.body.name,
       	    password:md5(req.body.password),
       	    date:new Date()
       }
-     
-//   var seleactive = 'insert into x003 values(0,'+req.body.name+','+md5(req.body.password)+','+new Date()+');' 
-//	 connection.query(seleactive, function(err,rows) {
-//  	   if (err) throw err;
-   	       
-// 	       console.log(rows);
-   	       
-// 	 })
-      
-     user.saver(users,'x003'); 
-     response={
+     user.saver(users,'x003');
+	 if(user.data){
+		 response={
     		 message:'200',
     		 filename:'ok！',
     		 ader:users
-    	};
-      
-      res.end(JSON.stringify(response));
-      
+    	 };
+	 }else{
+		 response={
+		     		 message:'300',
+		     		 filename:'no！',
+		     		 ader:users
+		 };
+	 }
+     res.end(JSON.stringify(response));
     }else{
     	response={
     		 message:'300',
@@ -204,29 +157,35 @@ app.post('/select_id',function(req,res){
     res.header('Access-Control-Allow-Headers', 'Content-Type');
      ad()
     if(login_token == req.body.login_token){
-//  	console.log(req.body);
-    	//连接数据库
-   var connection = mysql.createConnection(settings.db);
-   connection.connect();
+		
 //分页查询
 //var selectSQL = `select * from x003 where id > (`+(req.body.pageNo-1)+`)*`+req.body.pageSize+` limit `+req.body.pageSize+`;`
 
 var hou = req.body.pageNo*req.body.pageSize;
 var qian = hou-req.body.pageSize;
-var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
-
-   connection.query(selectSQL, function(err, rows){
-        if (err) throw err;
-           response={
-    		 message:'200',
-    		 filename:'ok',
-    		 data:rows,
-    		 act:shu.length
-    	   }
-          res.end(JSON.stringify(response))
-    });
-    //关闭连接
-    connection.end();
+// var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
+var selectSQL = `select * from x003 limit ?,?;`;
+let val = [qian,hou];
+ 
+	user.pool.getConnection((err,connection)=>{//connection链接
+	   if(err){
+	     console.log('---:'+err);
+	     return;
+	   }
+		  if(err) throw err;
+		  connection.query(selectSQL,val,(err,data)=>{//data是执行完操作之后mysql给予的响应结果
+		  	if(err) throw err;
+			   response={
+			    		 message:'200',
+			    		 filename:'ok',
+			    		 data:data,
+			    		 act:shu.length
+			    	   }
+			    res.end(JSON.stringify(response))   
+		  	connection.release()//释放链接
+		  })
+	  })
+	
     }else{
     	response={
     		 message:'300',
@@ -243,7 +202,6 @@ var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-     
     if(login_token == req.body.login_token){
     	console.log(req.body.id)
     	user.shan({id:req.body.id},'x003');
@@ -270,14 +228,13 @@ var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-     
     if(login_token == req.body.login_token){
-        
-    	user.xiu({id:req.body.id,name:req.body.name},'x003');
+    	user.xiu({name:req.body.name,id:req.body.id},'x003');
+		console.log(user.data,'修改结果');
     	response={
     		 message:'200',
     		 filename:'修改成功',
-    		 mu:{id:req.body.id,name:req.body.name}
+    		 name:req.body.name
     	}
        res.end(JSON.stringify(response))
     }else{
@@ -288,11 +245,6 @@ var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
        res.end(JSON.stringify(response))
     }
 })
-
-
-
-
-
 
 var server = app.listen(8081, function(){
   var host = server.address().address
