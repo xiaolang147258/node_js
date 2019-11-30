@@ -245,8 +245,8 @@ let val = [qian,hou];
        res.end(JSON.stringify(response))
     }
 })
-// var poor = 8081;
-var poor = 0.0.0.0
+var poor = 8081;
+// var poor = 0.0.0.0
 var server = app.listen(poor, function(){
   var host = server.address().address
   var port = server.address().port
