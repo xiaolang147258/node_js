@@ -245,8 +245,9 @@ let val = [qian,hou];
        res.end(JSON.stringify(response))
     }
 })
-
-var server = app.listen(8081, function(){
+// var poor = 8081;
+var poor = 0.0.0.0
+var server = app.listen(poor, function(){
   var host = server.address().address
   var port = server.address().port
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
