@@ -31,6 +31,10 @@ app.get('/index', function (req, res) {
    res.sendFile(__dirname + "/public/html/" + "index.html");//将html传递给前端
 })
 
+app.get('/onilse_tv', function (req, res) {
+   res.sendFile(__dirname + "/public/onilse_tv/dist/" + "index.html");//将html传递给前端
+})
+
 var shu = '1'
 function ad(){//查询所有的数据
 	 // var connection = mysql.createConnection(settings.db);
