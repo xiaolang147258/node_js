@@ -32,7 +32,7 @@ app.get('/index', function (req, res) {
 })
 
 app.get('/onilse_tv', function (req, res) {
-   res.sendFile(__dirname + "/public/onilse_tv/dist/" + "index.html");//将html传递给前端
+   res.sendFile(__dirname + "/onilse_tv/dist/index.html");//将html传递给前端
 })
 
 var shu = '1'
