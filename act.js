@@ -64,12 +64,15 @@ app.post('/login',(req,res)=>{
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+	
    if(tokenid_md5==req.body.tokenid){
+	       console.log(md5(req.body.password));
 		   user.pool.getConnection((err,connection)=>{//connection链接
 		      if(err){
-		        console.log('---:'+err);
-		        return;
-		      }
+		        console.log('数据库报错：'+err);return;
+		      }else{
+			    console.log('数据库连接成功')
+			  }
 		   	  if(err) throw err;
 		   	  connection.query('select * from x003 where name=?',req.body.name,(err,data)=>{//data是执行完操作之后mysql给予的响应结果
 		   	  	if(err) throw err;

@@ -15,11 +15,19 @@ var user = {
 // })
 //线上数据库
 user.pool=mysql.createPool({//链接池
-	host:'39.108.164.131',
+	host:'39.108.231.124',
 	user:'root',  //用户名
-	password:'123456',   //密码
+	password:'admin',   //密码
 	database:'boss',
 	port:'3306',     //端口号
+	dialectOptions: {
+	  socketPath: '/tmp/mysql.sock' // 指定套接字文件路径
+	 },
+	 pool: {
+	  max: 5,
+	  min: 0,
+	  idle: 10000
+	 }
 })
 
 function happy(a,b){//a:mysql的语句b：操作的具体数据 c:回调函数
