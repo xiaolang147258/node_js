@@ -4,8 +4,9 @@ var app = express();
 var fs = require('fs');
 var mysql = require('mysql');
 
-var bodyParser = require('body-parser');
+var bodyParse = require('body-parser');
 var multer  = require('multer');
+// var upload = multer({dest:'public/img'})
 
 var user = require('./zsgc.js');
 // var settings = require('./setting.js');
@@ -19,31 +20,57 @@ var md5 = function(data) {
 }
 var tokenid_md5 = md5('qq2443611475');//与前端交互的钥匙
 
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: '/tmp/'}).array('image'));
-
-app.get('/', function (req, res){
-   res.send('Hello World');
+// 设置图片存储路径
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {cb(null, './public/img');  },
+  filename: function(req, file, cb) {cb(null, `${Date.now()}-${file.originalname}`)}
 })
+
+// 添加配置文件到muler对象。
+var upload = multer({ storage: storage });var imgBaseUrl = '../'
+
+// bodyParse 用来解析post数据
+app.use(bodyParse.urlencoded({extended:false}));
+app.use(express.static('public'));
+
+// 解决跨域问题
+app.all('*',function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  if (req.method == 'OPTIONS') {res.send(200); }else {next();}
+})
+
+//上传图片接口===============================================================================================================================================================
+app.post('/imgage',upload.single('myfile'),function(req,res){
+	// 读取上传的图片信息
+	  var files = req;
+	  console.log(req.body)
+	  console.log(req.file)
+	  // 设置返回结果
+	  var result = {};
+	  if(!files) {
+	    result.code = 300;
+	    result.errMsg = '上传失败';
+	  } else {
+	    result.code = 200;
+	    result.data = {
+	      url:files.file.path,
+		  data:files.body
+	    }
+	    result.errMsg = '上传成功';
+	  }
+	  res.end(JSON.stringify(result));
+})
+
 
 app.get('/index', function (req, res) {
    res.sendFile(__dirname + "/public/html/" + "index.html");//将html传递给前端
 })
-
-app.get('/onilse_tv', function (req, res) {
-   res.sendFile(__dirname + "/public/tv/onilse_tv/dist/index.html");//将html传递给前端
-})
-
+//==========================================================================================================================================================================
 var shu = '1'
 function ad(){//查询所有的数据
-	 // var connection = mysql.createConnection(settings.db);
-     // connection.connect();
      var seleactive = `select * from x003;`;
-	 // connection.query(seleactive, function(err, rows) {
-  //   	   if (err) throw err;
-  //   	   shu = rows
-  //    })
 	 user.pool.getConnection((err,connection)=>{//connection链接
 	    if(err){console.log('---:'+err);return}
 	 	 connection.query(seleactive,(err,data)=>{//data是执行完操作之后mysql给予的响应结果
@@ -52,7 +79,6 @@ function ad(){//查询所有的数据
 	 	  	connection.release()//释放链接
 	 	  })
 	   })
-     // connection.end();
 }
 
  //=============================================================================================================================================================================
@@ -128,7 +154,8 @@ app.post('/create_name', function(req,res){//新增
       	    id:login_token,
       	    name:req.body.name,
       	    password:md5(req.body.password),
-      	    date:new Date()
+      	    date:new Date(),
+			numbder:0
       }
      user.saver(users,'x003');
 	 if(user.data){

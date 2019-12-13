@@ -15,19 +15,13 @@ var user = {
 // })
 //线上数据库
 user.pool=mysql.createPool({//链接池
-	host:'39.108.231.124',
+	host:'129.204.194.147',
 	user:'root',  //用户名
-	password:'admin',   //密码
+	password:'Joker#163.com',   //密码
 	database:'boss',
 	port:'3306',     //端口号
-	dialectOptions: {
-	  socketPath: '/tmp/mysql.sock' // 指定套接字文件路径
-	 },
-	 pool: {
-	  max: 5,
-	  min: 0,
-	  idle: 10000
-	 }
+	dialect: 'mysql',
+	
 })
 
 function happy(a,b){//a:mysql的语句b：操作的具体数据 c:回调函数
@@ -51,8 +45,8 @@ user.login = function(user,ad){
 
 //新建
 user.saver = function(user,ad){
-	var saversql='insert into '+ad+' values(?,?,?,?);'
-	happy(saversql,[user.id,user.name,user.password,user.date])
+	var saversql='insert into '+ad+' values(?,?,?,?,?);'
+	happy(saversql,[user.id,user.name,user.password,user.date,user.numbder])
 }
 //user.saver({id:0,name:"把阿布",age:"99",birth:"1997/03/05"},"mm")
 //删除
@@ -69,6 +63,10 @@ user.xiu = function(user,ad){
 	var saversql='update '+ad+' set name=? where id=?';
 	happy(saversql,[user.name,user.id])
 }
+
+
+
+
 //user.xiu({age:"66",id:8},"mm")
 module.exports = user;
 

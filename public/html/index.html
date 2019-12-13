@@ -159,11 +159,11 @@ Last Name: <input type="text" name="last_name">
 	var pageNo = 1;
 	var active = ''
 	
-	// var urls = 'http://127.0.0.1:8081'//本地
-	var urls = 'http://39.108.231.124:8081'//线上
+	var urls = 'http://127.0.0.1:8081'//本地
+	// var urls = 'http://39.108.231.124:8081'//线上
 	
 function cha_xun(){
-		
+	
    $.ajax({
     url:urls+"/select_id",  //ajax请求地址
     cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
