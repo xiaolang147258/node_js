@@ -53,6 +53,24 @@ app.all('*',function (req, res, next) {
   if (req.method == 'OPTIONS') {res.send(200); }else {next();}
 })
 
+
+const os = require('os');
+///////////////////获取本机ip///////////////////////
+function getIPAdress() {
+    var interfaces = os.networkInterfaces();
+    for (var devName in interfaces) {
+        var iface = interfaces[devName];
+        for (var i = 0; i < iface.length; i++) {
+            var alias = iface[i];
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+}
+const myHost = getIPAdress();
+
+
 //上传图片接口===============================================================================================================================================================
 app.post('/imgage',upload.single('myfile'),function(req,res){
 	// 读取上传的图片信息
@@ -65,10 +83,13 @@ app.post('/imgage',upload.single('myfile'),function(req,res){
 	    result.code = 300;
 	    result.errMsg = '上传失败';
 	  } else {
-	    result.code = 200;
-	    result.data = {
-	      url:files.file.path,
-		  data:files.body
+		let localtion = 'http://'+myHost+':8081'
+	    result = {
+	      url: localtion+'/img/'+files.file.filename,
+		  datas:files.body,
+		  data:[(localtion+'/img/'+files.file.filename)],
+		  errno:0,
+		  code:200
 	    }
 	    result.errMsg = '上传成功';
 	  }
@@ -82,19 +103,21 @@ app.get('/index', function (req, res) {
 })
 
 //==========================================================================================================================================================================
-var shu = '1'
-function ad(){//查询所有的数据
-     var seleactive = `select * from x003;`;
+var shu = '';
+function ad(biao){//查询所有的数据
+     var seleactive = `SELECT count(*) FROM `+biao+`;`;
 	 user.pool.getConnection((err,connection)=>{//connection链接
 	    if(err){console.log('---:'+err);return}
 	 	 connection.query(seleactive,(err,data)=>{//data是执行完操作之后mysql给予的响应结果
 	 	  	if(err) throw err;
 	 		shu = data;
+			console.log(shu,'数据长度')
 	 	  })
 		 connection.release()//释放链接
 	   })
 }
 
+ //=============================================================================================================================================================================
  //=============================================================================================================================================================================
 //登录功能//
 var login_token = '';
@@ -112,6 +135,7 @@ app.post('/login',(req,res)=>{
 							code:'301',
 							filename:'用户不存在'
 						}
+						res.end(JSON.stringify(response))
 				}else{
 							     console.log(md5(req.body.password),data[0].password);
 							   	 if(md5(req.body.password) == data[0].password){
@@ -139,15 +163,19 @@ app.post('/login',(req,res)=>{
 										   req_body:req.body
 							       	      }
 									  res.end(JSON.stringify(response))
-							   	   }   
+							   	   }
 				}
-		   	  	connection.release()//释放链接
+		   	  	
 		   	  })
+			  connection.release()//释放链接
 		     })
+			 
 })
 
+ //=============================================================================================================================================================================
 //=============================================================================================================================================================================
-app.post('/create_name', function(req,res){//新增
+//新增用户  003表
+app.post('/create_name', function(req,res){
 	 let login_token = md5(req.body.name+req.body.password+new Date());
      var users = {
       	    id:login_token,
@@ -161,112 +189,177 @@ app.post('/create_name', function(req,res){//新增
       }
      user.saver(users,'x003');
 	 if(user.data){
-		 response={
-    		 code:'200',
-    		 filename:'ok！',
-    		 ader:users
-    	 };
-	 }else{
-		 response={
-		     		 code:'300',
-		     		 filename:'no！',
-		     		 ader:users
-		 };
-	 }
-     res.end(JSON.stringify(response));
+		 response={code:'200',filename:'ok！',ader:users};
+	 }else{response={code:'300',filename:'no！',ader:users}}
+         res.end(JSON.stringify(response));
 })
 
 
- //=============================================================================================================================================================================
-//查询功能   
 
+function shu_s(){//生成随机数
+	 var result = [];
+	 for(var i=0;i<10;i++){var ranNum = Math.ceil(Math.random() * 25);result.push(String.fromCharCode(65+ranNum))}return result.join('');
+};
+
+//新建商品   004表
+app.post('/create_shang', function(req,res){
+	 let _token = md5(shu_s()+new Date());
+     var users = {
+      	    // img_title:JSON.stringify(req.body.img_title),//标题图
+			img_title:req.body.img_title,//标题图
+      	    title:req.body.title,//标题
+      	    id:_token,
+			value:req.body.value,//内容
+			// img_box:JSON.stringify(req.body.img_box),//内容介绍图片
+			img_box:req.body.img_box.join(','),//内容介绍图片
+			type:2,//状态  2=上架  1=下架
+			jin_num:req.body.jin_num,//  2=精选   1=普通
+			size:req.body.size,
+			type_lei:req.body.type_lei,// 1=软件  2=游戏
+      }
+     user.saver_004(users,'x004');
+	 if(user.data){
+		 let box = {
+		 		 id:_token,
+		 		 url:req.body.url
+		 }
+		 user.saver_004_2(box,'x004_2');
+		 response={code:'200',filename:'ok！',ader:users};
+	 }else{response={code:'300',filename:'no！',ader:users}}
+         res.end(JSON.stringify(response));
+})
+
+
+
+ //=============================================================================================================================================================================
+ //=============================================================================================================================================================================
+
+//查询功能   会员列表
 app.post('/select_id',function(req,res){
-  
- if(req.body.login_token){
-  user.select_05({id:req.body.login_token},'x005');
-	 console.log(user.data.length,'======',req.body);
-	if(user.data.length!=0){
-	 ad()
+if(req.headers.authorization){
+	// ad('x003');
+  // user.select_05({id:req.headers.authorization.replace("Bater ","")},'x005');
+// if(user.data.length!=0){
 //分页查询
-//var selectSQL = `select * from x003 where id > (`+(req.body.pageNo-1)+`)*`+req.body.pageSize+` limit `+req.body.pageSize+`;`
 var hou = req.body.pageNo*req.body.pageSize;
 var qian = hou-req.body.pageSize;
-// var selectSQL = `select * from x003 limit `+qian+`,`+hou+`;`
-
 var selectSQL = `select * from x003 limit ?,?;`;
 let val = [qian,hou];
-
 let number = req.body.number?true:false;
-let vip_date = req.body.vip_date?true:false;
+  if(req.body.number===0){number = true}
 let fs_number = req.body.fs_number?true:false;
-let fs_date = req.body.fs_date?true:false;
+  if(req.body.fs_number===0){fs_number = true}
 
-if(number==true&&vip_date==true&&fs_number==false&&fs_date==false){
-	selectSQL = `select * from x003 where number=? && vip_date=? limit ?,?;`;
-	val = [req.body.number,req.body.vip_date,qian,hou];
-}else if(number==true&&vip_date==false&&fs_number==true&&fs_date==false){
+if(req.body.name){
+	selectSQL = `select * from x003 where name=?;`;
+	val = [req.body.name];
+}
+if(number==true&&fs_number==false){ 
+	selectSQL = `select * from x003 where number=? limit ?,?;`;
+	val = [req.body.number,qian,hou];
+}else if(number==false&&fs_number==true){
+	selectSQL = `select * from x003 where fs_number=? limit ?,?;`;
+	val = [req.body.fs_number,qian,hou];
+}else if(number==true&&fs_number==true){
 	selectSQL = `select * from x003 where number=? && fs_number=? limit ?,?;`;
 	val = [req.body.number,req.body.fs_number,qian,hou];
-}else if(number==true&&vip_date==false&&fs_number==false&&fs_date==true){
-	selectSQL = `select * from x003 where number=? && fs_date=? limit ?,?;`;
-	val = [req.body.number,req.body.fs_date,qian,hou];
-}else if(number==true&&vip_date==true&&fs_number==true&&fs_date==false){
-	selectSQL = `select * from x003 where number=? && vip_date=? && fs_number=? limit ?,?;`;
-	val = [req.body.number,req.body.vip_date,req.body.fs_number,qian,hou];
-}else if(number&&vip_date&&fs_numbe&&fs_date){
-	selectSQL = `select * from x003 where number=? && vip_date=? && fs_number=? &&fs_date=? limit ?,?;`;
-	val = [req.body.number,req.body.vip_date,req.body.fs_number,req.body.fs_date,qian,hou];
-}else if(number==false&&vip_date==true&&fs_number==true&&fs_date==false){
-	selectSQL = `select * from x003 where vip_date=? && fs_number=? limit ?,?;`;
-	val = [req.body.vip_date,req.body.fs_number,qian,hou];
-}else if(number==false&&vip_date==true&&fs_number==false&&fs_date==true){
-	selectSQL = `select * from x003 where vip_date=? && fs_date=? limit ?,?;`;
-	val = [req.body.vip_date,req.body.fs_date,qian,hou];
-}else if(number==false&&vip_date==true&&fs_number==true&&fs_date==true){
-	selectSQL = `select * from x003 where vip_date=? && fs_date=? && fs_number=? limit ?,?;`;
-	val = [req.body.vip_date,req.body.fs_date,req.body.fs_number,qian,hou];
-}else if(number==false&&vip_date==false&&fs_number==true&&fs_date==true){
-	selectSQL = `select * from x003 where fs_date=? && fs_number=? limit ?,?;`;
-	val = [req.body.fs_date,req.body.fs_number,qian,hou];
 }
-
+    
 	user.pool.getConnection((err,connection)=>{//connection链接
 	   if(err){console.log('---:'+err);return;}
 		  if(err) throw err;
 		  connection.query(selectSQL,val,(err,datas)=>{//data是执行完操作之后mysql给予的响应结果
 		  	if(err) throw err;
-			   console.log(datas)
-			   response={
+			var seleactive = `SELECT count(*) FROM x003;`;
+			user.pool.getConnection((err,connectionss)=>{//connection链接
+				 connectionss.query(seleactive,(err,data_length)=>{//data是执行完操作之后mysql给予的响应结果
+				  if(err) throw err;
+					 response={
+					  		 code:'200',
+					  		 filename:'ok',
+					  		 data:datas,
+					  		 act:JSON.stringify(data_length[0])
+					  	   }
+					  res.end(JSON.stringify(response));//获取数据==需要先把从数据库获取到的数据传递出去，再释放数据库连接  
+				  })
+				  connectionss.release()//释放链接
+			  })
+		  })
+		  connection.release()//释放链接 
+	  })
+    // }else{
+    // 	response={code:'300',filename:'no'}
+    //     res.end(JSON.stringify(response))
+    // }
+	}else{
+		response={code:'301',filename:'id不合法'}
+		res.end(JSON.stringify(response))
+	}
+})
+
+//==========================================================================================================================
+//==========================================================================================================================
+//查询功能   商品列表
+app.post('/select_shang',function(req,res){
+if(req.headers.authorization){
+  
+//分页查询
+var hou = req.body.pageNo*req.body.pageSize;
+var qian = hou-req.body.pageSize;
+var selectSQL = `select * from x004 limit ?,?;`;
+let val = [qian,hou];
+
+let jin_num = req.body.jin_num?true:false;
+let type_lei = req.body.type_lei?true:false;
+  
+if(req.body.title){
+	selectSQL = `select * from x004 where title like ? limit ?,?;`;//模糊查询
+	val = [req.body.title+'%',qian,hou];
+}
+if(jin_num==true&&type_lei==false){ 
+	selectSQL = `select * from x004 where jin_num=? limit ?,?;`;
+	val = [req.body.jin_num,qian,hou];
+}else if(jin_num==false&&type_lei==true){
+	selectSQL = `select * from x004 where type_lei=? limit ?,?;`;
+	val = [req.body.type_lei,qian,hou];
+}else if(jin_num==true&&type_lei==true){
+	selectSQL = `select * from x004 where jin_num=? && type_lei=? limit ?,?;`;
+	val = [req.body.jin_num,req.body.type_lei,qian,hou];
+}
+	user.pool.getConnection((err,connection)=>{//connection链接
+	   if(err){console.log('---:'+err);return;}
+		  if(err) throw err;
+		  connection.query(selectSQL,val,(err,datas)=>{//data是执行完操作之后mysql给予的响应结果
+		  	if(err) throw err;
+			var seleactive = `SELECT count(*) FROM x004;`;
+			user.pool.getConnection((err,connectionss)=>{//connection链接
+				 connectionss.query(seleactive,(err,data_length)=>{//data是执行完操作之后mysql给予的响应结果
+				  if(err) throw err;
+					 response={
 			    		 code:'200',
 			    		 filename:'ok',
 			    		 data:datas,
-			    		 act:shu.length
+						 act:JSON.stringify(data_length[0])
 			    	   }
-					   res.end(JSON.stringify(response));//获取数据==需要先把从数据库获取到的数据传递出去，再释放数据库连接
+				     res.end(JSON.stringify(response));//获取数据==需要先把从数据库获取到的数据传递出去，再释放数据库连接
+				  })
+				  connectionss.release()//释放链接
+			  })
 		  })
 		  connection.release()//释放链接 
-		 
 	  })
-    }else{
-    	response={
-    		 code:'300',
-    		 filename:'no',
-    	}
-       res.end(JSON.stringify(response))
-    }
-	
+    
 	}else{
-		response={
-		    		 code:'301',
-		    		 filename:'id不合法',
-		    	}
+		response={code:'301',filename:'id不合法'}
 		res.end(JSON.stringify(response))
 	}
-	
 })
- //=============================================================================================================================================================================
+
+
+//=============================================================================================================================================================================
+//=============================================================================================================================================================================
 //删除功能   
- app.post('/delect',function(req,res){
+ app.post('/delect',(req,res)=>{
     	console.log(req.body.id)
 		user.shan({id:req.body.id},'x003');
 		  response={
@@ -278,7 +371,7 @@ if(number==true&&vip_date==true&&fs_number==false&&fs_date==false){
 })
 
 //退出登录
-app.post('/delect_login',function(req,res){
+app.post('/delect_login',(req,res)=>{
     	console.log(req.body.id)
 		user.shan({id:req.body.id},'x005');
 		  response={
@@ -290,6 +383,7 @@ app.post('/delect_login',function(req,res){
 })
 
  //=============================================================================================================================================================================
+ //=============================================================================================================================================================================
 //修改功能  
 
  function date_fx_vip(date,index){// 时间戳 + 天数 = 时间戳
@@ -297,7 +391,7 @@ app.post('/delect_login',function(req,res){
  };
 
 //封号接口
-app.post('/update_fs',function(req,res){
+app.post('/update_fs',(req,res)=>{
 	    let dates = date_fx_vip(new Date(),req.body.fs_date);
     	user.xiu({min:dates,id:req.body.id},{b:'x003',m:'fs_date'});
 		user.xiu({min:1,id:req.body.id},{b:'x003',m:'fs_number'});
@@ -308,8 +402,9 @@ app.post('/update_fs',function(req,res){
     	}
 	res.end(JSON.stringify(response))
 })
+
 //解封接口
-app.post('/update_fs_off',function(req,res){
+app.post('/update_fs_off',(req,res)=>{
 	     let datess = new Date( new Date().getTime() - (((1*24)*3600)*1000));
     	user.xiu({min:datess,id:req.body.id},{b:'x003',m:'fs_date'});
 		user.xiu({min:0,id:req.body.id},{b:'x003',m:'fs_number'});
@@ -320,9 +415,8 @@ app.post('/update_fs_off',function(req,res){
 	res.end(JSON.stringify(response))
 }) 
 
-
 //升级账户 
- app.post('/update_top',function(req,res){
+ app.post('/update_top',(req,res)=>{
 	 if(req.body.number&&req.body.vip_date&&req.body.id){
 	   user.pool.getConnection((err,connection)=>{//connection链接
 		connection.query('select * from x003 where id=?;',req.body.id,(errs,datas)=>{//data是执行完操作之后mysql给予的响应结果
@@ -350,7 +444,7 @@ app.post('/update_fs_off',function(req,res){
 });
 
 //修改密码
-app.post('/update_xiu',function(req,res){
+app.post('/update_xiu',(req,res)=>{
 	 if(req.body.password&&req.body.id){
     	user.xiu({min:md5(req.body.password),id:req.body.id},{b:'x003',m:'password'});
     	response={
@@ -370,14 +464,154 @@ app.post('/update_xiu',function(req,res){
 }) 
 
 
+//=============================================================================================================================================================================
+//=============================================================================================================================================================================
+//获取商品下载地址接口  会先判断商品是否为精选   是的话对用户身份验证判断，判断不为普通用户，即可请求
+app.post('/select_url',(req,res)=>{
+	if(req.headers.authorization){}else{
+		response={
+		    		 code:'400',
+		    		 filename:'no',
+		    		 data:'缺少用户id'
+		    	  }
+		res.end(JSON.stringify(response));
+		return false;
+	}
+	user.pool.getConnection((err,connection)=>{//connection链接
+	connection.query('select * from x004 where id=?',req.body.shang_id,(err,data_box)=>{//data是执行完操作之后mysql给予的响应结果
+		if(err) throw err;
+	    if(data_box[0].jin_num==2){
+		    user.pool.getConnection((err,connections)=>{//connection链接
+			 connections.query('select * from x003 where id=?',req.headers.authorization.replace("Bater ",""),(err,datas)=>{//data是执行完操作之后mysql给予的响应结果
+			    console.log(datas);
+				if(err) throw err;
+			    if(datas[0].number!=0){
+				  user.pool.getConnection((err,connections2)=>{//connection链接
+				   connections2.query('select * from x004_2 where id=?',req.body.shang_id,(err,datas2)=>{//data是执行完操作之后mysql给予的响应结果
+				  	if(err) throw err;     
+				  		  response={
+				      		 code:'200',
+				      		 filename:'ok',
+				      		 data:datas2[0].url
+				      	  }
+				         res.end(JSON.stringify(response));
+					})
+					 connections2.release()//释放链接
+				  })
+				}
+			})
+			connections.release()//释放链接
+		  })
+		}else{
+			user.pool.getConnection((err,connections2)=>{//connection链接
+			 connections2.query('select * from x004_2 where id=?',req.body.shang_id,(err,datas2)=>{//data是执行完操作之后mysql给予的响应结果
+				if(err) throw err;     
+					  response={
+			    		 code:'200',
+			    		 filename:'ok',
+			    		 data:datas2[0].url
+			    	  }
+			       res.end(JSON.stringify(response));
+			})
+			connections2.release()//释放链接
+			})
+		}
+	})	
+	connection.release()//释放链接
+  })
+})
 
+//上架、下架修改、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+app.post('/shang_sx',(req,res)=>{
+	 if(req.headers.authorization){}else{response={code:'400',filename:'no',data:'缺少用户id'};res.end(JSON.stringify(response));return false}
+	 if(req.body.type&&req.body.id){
+    	user.xiu({min:req.body.type,id:req.body.id},{b:'x004',m:'type'});
+    	response={
+    		 code:'200',
+    		 filename:'成功',
+    		 name:req.body
+    	}
+	    res.end(JSON.stringify(response))
+	 }else{
+	 		 response={
+	 		 	 code:'300',
+	 		 	 filename:'缺少字段',
+	 		 	 name:req.body
+	 		 }
+	 		 res.end(JSON.stringify(response))
+	 }
+})
+//普通，精选修改、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
+app.post('/shang_pj',(req,res)=>{
+	 if(req.headers.authorization){}else{response={code:'400',filename:'no',data:'缺少用户id'};res.end(JSON.stringify(response));return false}
+	 if(req.body.jin_num&&req.body.id){
+    	user.xiu({min:req.body.jin_num,id:req.body.id},{b:'x004',m:'jin_num'});
+    	response={
+    		 code:'200',
+    		 filename:'成功',
+    		 name:req.body
+    	}
+	    res.end(JSON.stringify(response))
+	 }else{
+	 		 response={
+	 		 	 code:'300',
+	 		 	 filename:'缺少字段',
+	 		 	 name:req.body
+	 		 }
+	 		 res.end(JSON.stringify(response))
+	 }
+})
 
+//删除商品、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、。。。。。，。
+app.post('/shang_delete',(req,res)=>{
+	 if(req.headers.authorization){}else{response={code:'400',filename:'no',data:'缺少用户id'};res.end(JSON.stringify(response));return false}
+	 if(req.body.id){
+    	user.shan({id:req.body.id},'x004');
+		user.shan({id:req.body.id},'x004_2');
+    	response={
+    		 code:'200',
+    		 filename:'成功',
+    		 name:req.body
+    	}
+	    res.end(JSON.stringify(response))
+	 }else{
+	 		 response={
+	 		 	 code:'300',
+	 		 	 filename:'缺少字段',
+	 		 	 name:req.body
+	 		 }
+	 		 res.end(JSON.stringify(response))
+	 }
+})
+//编辑修改商品、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、。。。。。，。
+app.post('/delect_shang',(req,res)=>{
+	 if(req.headers.authorization){}else{response={code:'400',filename:'no',data:'缺少用户id'};res.end(JSON.stringify(response));return false}
+		var users = {
+					img_title:req.body.img_title,//标题图
+		 	        title:req.body.title,//标题
+		 	        id:req.body.id,
+					value:req.body.value,//内容
+					img_box:req.body.img_box.join(','),//内容介绍图片
+					jin_num:req.body.jin_num,//  2=精选   1=普通
+					size:req.body.size,//软件大小
+					type_lei:req.body.type_lei,// 1=软件  2=游戏
+					min:req.body.url,//软件下载地址
+		 }
+		user.xiu_shang(users,'x004');
+		user.xiu(users,{b:'x004_2',m:'url'});
+    	response={
+    		 code:'200',
+    		 filename:'成功',
+    		 name:req.body
+    	}
+	    res.end(JSON.stringify(response))
+})
 
 var poor = 8081;
 // var poor = 0.0.0.0
-var server = app.listen(poor, function(){
+var server = app.listen(poor, ()=>{
   var host = server.address().address
   var port = server.address().port
-  console.log("应用实例，访问地址为 http://%s:%s", host, port)
+  console.log("应用实例，访问地址为 http://"+myHost+':'+port);
  
 })
