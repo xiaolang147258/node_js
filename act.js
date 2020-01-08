@@ -34,7 +34,7 @@ app.use( bodyParser.urlencoded({
 
 // 设置图片存储路径
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {cb(null, './public/img');},
+  destination: function(req, file, cb) {cb(null, './img');},
   filename: function(req, file, cb) {cb(null, `${Date.now()}-${file.originalname}`)}
 })
 
