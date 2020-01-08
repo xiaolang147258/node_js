@@ -15,7 +15,7 @@ localStorage.url = 'http://localhost';
 		if($('#inputEmail3').val()&&$('#inputPassword3').val()){
 			
 			$.ajax({
-			 url:"http://39.108.231.124/:8081/login",  //ajax请求地址
+			 url:"http://39.108.231.124:8081/login",  //ajax请求地址
 			 cache: false,//(默认: true,dataType为script和jsonp时默认为false)设置为 false 将不缓存此页面，建议使用默认
 			 type:"post",//请求方式 "POST" 或 "GET"， 默认为 "GET"。注意：其它 HTTP 请求方法，如 PUT 和 DELETE 也可以使用，但仅部分浏览器支持。
 			 dataType:"json",//根据返回数据类型可以有这些类型可选：xml html script json jsonp text
