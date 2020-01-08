@@ -32,7 +32,7 @@ localStorage.url = 'http://localhost';
 					  localStorage.name = $('#inputEmail3').val();localStorage.password = $('#inputPassword3').val();
 					  console.log(localStorage.name,localStorage.password)
 					}
-			     	// localStorage.names = $('#inputEmail3').val();
+			     	localStorage.names = $('#inputEmail3').val();
 			      swal({
 					title: '登录成功!',
 					text: "将会跳转至会员列表页面!",
@@ -47,7 +47,7 @@ localStorage.url = 'http://localhost';
 					buttonsStyling: false
 					}).then(function(isConfirm) {
 					  if (isConfirm === true) {
-					      window.location = 'http://127.0.0.1:8081/';
+					      window.location = 'http://39.108.231.124:8081/put#/dashboard';
 					  } else if (isConfirm === false) {}
 				   })
 			     }else{
