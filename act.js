@@ -102,6 +102,11 @@ app.get('/index', function (req, res) {
    res.sendFile(__dirname + "/public/html/3dyun/index.html");//将html传递给前端
 })
 
+app.use(express.static(__dirname+'/public/dist'));//配置3dyun里面的静态资源到服务器
+app.get('/put', function (req, res) {
+   res.sendFile(__dirname + "/public/dist/index.html");//将html传递给前端
+})
+
 //==========================================================================================================================================================================
 var shu = '';
 function ad(biao){//查询所有的数据
