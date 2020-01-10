@@ -78,11 +78,9 @@ function getIPAdress() {
                     }
                 }
             }
-    
         } else if (osType === 'Linux') {
             ip = netInfo.eth0[0].address;
         }
-    
         return ip;
 }
 const myHost = getIPAdress();
@@ -100,7 +98,8 @@ app.post('/imgage',upload.single('myfile'),function(req,res){
 	    result.code = 300;
 	    result.errMsg = '上传失败';
 	  } else {
-		let localtion = 'http://'+myHost+':8081'
+		// let localtion = 'http://'+myHost+':8081'
+		let localtion = 'http://39.108.231.124:8081'
 	    result = {
 	      url: localtion+'/img/'+files.file.filename,
 		  datas:files.body,
