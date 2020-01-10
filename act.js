@@ -113,6 +113,11 @@ app.get('/put', function (req, res) {
    res.sendFile(__dirname + "/public/dist/index.html");//将html传递给前端
 })
 
+app.use(express.static(__dirname+'/public/tv/onilse_tv/dist'));//配置3dyun里面的静态资源到服务器
+app.get('/tv', function (req, res) {
+   res.sendFile(__dirname + "/public/tv/onilse_tv/dist/index.html");//将html传递给前端
+})
+
 //==========================================================================================================================================================================
 var shu = '';
 function ad(biao){//查询所有的数据
