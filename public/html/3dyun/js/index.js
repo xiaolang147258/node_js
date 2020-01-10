@@ -1,6 +1,5 @@
 localStorage.url = 'http://localhost';
 	
-	
 	let heights = ($(window).height()-400)*0.5;
 	$('#login').css('top',heights);
 	
