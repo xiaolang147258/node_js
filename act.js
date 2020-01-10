@@ -103,18 +103,18 @@ app.post('/imgage',upload.single('myfile'),function(req,res){
 })
 //==========================================================================================================================================================================
 
-app.use(express.static(__dirname+'/public'));//配置3dyun里面的静态资源到服务器
-// app.use(express.static(__dirname+'/public/html/3dyun'));//配置3dyun里面的静态资源到服务器
+// app.use(express.static(__dirname+'/public'));//配置3dyun里面的静态资源到服务器
+app.use(express.static(__dirname+'/public/html/3dyun'));//配置3dyun里面的静态资源到服务器
 app.get('/index', function (req, res) {//跳转至登录界面
    res.sendFile(__dirname + "/public/html/3dyun/index.html");//将html传递给前端
 })
 
-// app.use(express.static(__dirname+'/public/dist'));//配置3dyun里面的静态资源到服务器
+app.use(express.static(__dirname+'/public/dist'));//配置3dyun里面的静态资源到服务器
 app.get('/put', function (req, res) {//跳转至管理页面
    res.sendFile(__dirname + "/public/dist/index.html");//将html传递给前端
 })
 
-// app.use(express.static(__dirname+'/public/tv/onilse_tv/dist'));//配置3dyun里面的静态资源到服务器
+app.use(express.static(__dirname+'/public/tv/onilse_tv/dist'));//配置3dyun里面的静态资源到服务器
 app.get('/tv', function (req, res) {
    res.sendFile(__dirname + "/public/tv/onilse_tv/dist/index.html");//将html传递给前端
 })
