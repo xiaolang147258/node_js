@@ -634,7 +634,7 @@ app.post('/delect_shang',(req,res)=>{
 	    res.end(JSON.stringify(response))
 })
 
-var poor = 8081;
+var poor = 80;
 // var poor = 0.0.0.0
 var server = app.listen(poor, ()=>{
   var host = server.address().address
