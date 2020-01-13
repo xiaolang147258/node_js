@@ -99,7 +99,7 @@ app.post('/imgage',upload.single('myfile'),function(req,res){
 	    result.errMsg = '上传失败';
 	  } else {
 		// let localtion = 'http://'+myHost+':8081'
-		let localtion = 'http://net69.fun:9091'
+		let localtion = 'http://net69.fun:8999'
 	    result = {
 	      url: localtion+'/img/'+files.file.filename,
 		  datas:files.body,
