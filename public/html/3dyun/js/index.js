@@ -46,7 +46,8 @@ localStorage.url = 'http://localhost';
 					buttonsStyling: false
 					}).then(function(isConfirm) {
 					  if (isConfirm === true) {
-					      window.location = 'http://39.108.231.124:8081/put#/dashboard';
+					      // window.location = 'http://39.108.231.124:8081/put#/dashboard';
+						  window.location = 'http://net69.fun/put#/dashboard';
 					  } else if (isConfirm === false) {}
 				   })
 			     }else{
