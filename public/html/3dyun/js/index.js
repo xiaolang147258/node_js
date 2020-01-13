@@ -49,7 +49,7 @@ $('.btn').on('click', function() {
 					}).then(function(isConfirm) {
 						if (isConfirm === true) {
 							// window.location = 'http://39.108.231.124:8081/put#/dashboard';
-							window.location = 'http://net69.fun/put#/dashboard';
+							window.location = 'http://net69.fun:8080/put#/dashboard';
 						} else if (isConfirm === false) {}
 					})
 				} else {
