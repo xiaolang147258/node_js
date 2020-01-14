@@ -85,7 +85,8 @@ function getIPAdress() {
 }
 const myHost = getIPAdress();
 
-
+// let localtion = 'http://net69.fun:8999';
+let localtion = 'http://'+myHost+':8999';
 //上传图片接口===============================================================================================================================================================
 app.post('/imgage',upload.single('myfile'),function(req,res){
 	// 读取上传的图片信息
@@ -99,7 +100,6 @@ app.post('/imgage',upload.single('myfile'),function(req,res){
 	    result.errMsg = '上传失败';
 	  } else {
 		// let localtion = 'http://'+myHost+':8081'
-		let localtion = 'http://net69.fun:8999'
 	    result = {
 	      url: localtion+'/img/'+files.file.filename,
 		  datas:files.body,
@@ -639,6 +639,6 @@ var poor = 8999;
 var server = app.listen(poor, ()=>{
   var host = server.address().address
   var port = server.address().port
-  console.log("应用实例，访问地址为 http://"+myHost+':'+port);
+  console.log("应用实例，访问地址为"+localtion);
  
 })
