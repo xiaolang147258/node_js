@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <!-- import CSS -->
+  <title>积分评价系统</title>
+  <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.5/lib/index.css">
+  
+  <style type="text/css">
+  	*{box-sizing: border-box;margin: 0;padding: 0;font-family:'PingFangSC-regular';}
+	html{background: rgba(248, 248, 248, 1);}
+	.rzbox1{
+		width: 100%;
+		height: 1.36rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		background-color: #FFFFFF;
+		
+	}
+	.rzbox2{
+		width: 100%;
+		height: 2.44rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		background-color: #FFFFFF;
+		/* margin-top: 0.266666rem; */
+	}
+	.rzbox2-message{
+		width: 2.173333rem;
+		height: 1.413333rem;
+		margin-top: 0.493333rem;
+		margin-left: 0.306666rem;
+		float: left;
+	}
+	.rzbox2-name{
+		width: 2.12rem;
+		height: 0.72rem;
+	}
+	.name{
+		width: 1.44rem;
+		height: 0.72rem;
+		color: rgba(16, 16, 16, 1);
+		font-size: 0.48rem;
+		text-align: left;
+		float: left;
+		font-weight: bold;
+		line-height: 0.72rem;
+		font-family: SourceHanSansSC-bold;
+	}
+	.rzbox2-adress{	
+		width: 2.173333rem;
+		height: 0.48rem;
+		color: rgba(102, 102, 102, 1);
+		font-size: 0.32rem;
+		line-height: 0.48rem;
+		text-align: left;
+		font-family: SourceHanSansSC-regular;
+		margin-top: 0.213333rem;
+	}
+	.rzbox3{
+		width: 100%;
+		height: 12.013333rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		background-color: #FFFFFF;
+		margin-top: 0.266666rem;
+		padding-top: 0.453333rem;
+	}
+	.rzbox3-select{
+		width: 9.16rem;
+		height: 0.92rem;
+		margin: 0.266666rem auto;
+	}
+	.rzbottom{
+		width: 100%;
+		height: 1.866666rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		box-shadow: 0px -0.066666rem 0.08rem 0px rgba(0, 0, 0, 0.07);
+		border: 0.013333rem solid rgba(255, 255, 255, 0);
+		background-color: #FFFFFF;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+	.rzbottom-select1{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 0.96rem;
+	}
+	.rzbottom-select1 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select1 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.rzbottom-select2{
+		width: 1.04rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.rzbottom-select2 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select2 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.rzbottom-select3{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.rzbottom-select3 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select3 p{
+		color: #F20000;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.renzheng{
+		width: 100%;
+		height: 1.24rem;
+		line-height: 0.266666rem;
+		background-color: rgba(253, 246, 236, 1);
+		text-align: center;
+		box-shadow: 0px 0.08rem 0.08rem 0px rgba(0, 0, 0, 0.07);
+		border: 0.013333rem solid rgba(255, 255, 255, 0);
+		/* position: fixed;
+		top:0;
+		left: 0; */
+	}
+	.tishi{
+		float: left;
+		width: 5.973333rem;
+		height: 0.546666rem;
+		margin-left: 0.373333rem;
+		margin-top: 0.346666rem;
+		color: rgba(231, 162, 60, 1);
+		font-size: 0.373333rem;
+		line-height: 0.546666rem;
+		text-align: left;
+		font-family: SourceHanSansSC-regular;
+	}
+	.ljrz{
+		float: left;
+		width: 2.266666rem;
+		height: 0.88rem;
+		margin-left: 1.026666rem;
+		margin-top: 0.16rem;
+		line-height: 0.546666rem;
+		border-radius: 0.08rem;
+		background-color: rgba(238, 98, 15, 1);
+		color: rgba(255, 255, 255, 1);
+		font-size: 0.373333rem;
+		text-align: center
+		font-family: Roboto;
+		border: 0.013333rem solid rgba(255, 255, 255, 0);
+	}
+  </style>
+</head>
+<body>
+   <div id="meng" style="width:100%;height:100%;position:fixed;z-index:200;background:rgba(255,255,255,0.98);top:0;left:0;text-align:center;">
+   	  <img style="width:1.333333rem;height:1.333333rem;margin-top:80%;" src="img/c4165dbea595b8cd5fe581cbe392deb3.gif" alt="">
+   </div>
+  <div id="app" style="padding-bottom: 1.866666rem;">
+      <!-- <div class="rzbox1">
+      	<div style="width: 4.6rem;height: 0.826666rem;background-color: #CCCCCC;margin-left: 0.2rem;margin-top: 0.226666rem;"></div>
+      </div> -->
+	  <div v-show="!id" class="renzheng">
+	  		  <div class="tishi">您未实名认证，认证后可兑换商品！</div>
+	  		  <button @click="torenzheng" type="button" class="ljrz">立即认证</button>
+	  </div>
+	  
+	  <div class="rzbox2">
+		  <img v-if="databox.logo" :src="databox.logo" style="float: left; width: 1.44rem;height: 1.453333rem;margin-left: 0.373333rem;margin-top: 0.493333rem; border-radius: 0.106666rem;">
+		  <img v-else src="./img/17.png" style="float: left; width: 1.44rem;height: 1.453333rem;margin-left: 0.373333rem;margin-top: 0.493333rem; border-radius: 0.106666rem;">
+		  <div class="rzbox2-message">
+			  <div class="rzbox2-name">
+				  <div class="name">{{databox.name}}</div>
+				  <img src="img/党徽.png" style="width: 0.453333rem;height: 0.48rem;margin-top: 0.093333rem;">
+			  </div>
+			  <div class="rzbox2-adress">{{databox.group_name}}   {{databox.house_number}}</div>
+		  </div>
+	  </div>
+	  
+	  <div class="rzbox3">
+		  <div class="rzbox3-select">
+			  <img src="img/积分.png" style="float: left; width: 0.666666rem;height: 0.666666rem;margin-top: 0.06rem;">
+			  <div style="float: left; width: 1.706666rem;height: 0.626666rem;margin-left: 0.373333rem;margin-right: 0.266666rem;margin-top: 0.08rem; color: #101010;line-height: 0.626666rem; font-size: 0.426666rem;font-family: SourceHanSansSC-regular;">
+				  可用积分
+			  </div>
+			  <div style="float: left; width: 1.533333rem;height: 0.546666rem;margin-top: 0.12rem; line-height: 0.546666rem;border-radius: 0.106666rem;background-color: #FFEBD7;text-align: center;border: 0.013333rem solid #FFFFFF;">
+				  <font color="#F7840B">{{databox.my_point}}分</font>
+			  </div>
+		  </div>
+		  <hr style="width: 9.106666rem;border: 0.013333rem solid #EEEEEE;margin: 0 auto;">
+		  <div @click="ji" class="rzbox3-select">
+			  <img src="img/18.png" style="float: left; width: 0.666666rem;height: 0.666666rem;margin-top: 0.06rem;">
+			  <div style="float: left; width: 1.706666rem;height: 0.626666rem;margin-left: 0.373333rem;margin-right: 0.266666rem;margin-top: 0.08rem; color: #101010;line-height: 0.626666rem; font-size: 0.426666rem;font-family: SourceHanSansSC-regular;">
+			  		积分商城
+			  </div>			 
+			  <div style="float: left;margin-left: 5.493333rem;line-height: 0.786666rem;color: #b3b3b3;font-size:0.466666rem;padding-top:0.133333rem;"><van-icon name="arrow" /></div>
+		  </div>
+		   <hr style="width: 9.106666rem;border: 0.013333rem solid #EEEEEE;margin: 0 auto;">
+		  <div @click='tuo' class="rzbox3-select">
+			  <img src="img/19.png" style="float: left; width: 0.666666rem;height: 0.666666rem;margin-top: 0.06rem;">
+			  <div style="float: left; width: 1.706666rem;height: 0.626666rem;margin-left: 0.373333rem;margin-right: 0.266666rem;margin-top: 0.08rem; color: #101010;line-height: 0.626666rem; font-size: 0.426666rem;font-family: SourceHanSansSC-regular;">
+			  		脱贫攻坚
+			  </div>
+			  <div style="float: left;margin-left: 5.493333rem;line-height: 0.786666rem;color: #b3b3b3;font-size:0.466666rem;padding-top:0.133333rem;"><van-icon name="arrow" /></div>
+		  </div>
+		   <hr style="width: 9.106666rem;border: 0.013333rem solid #EEEEEE;margin: 0 auto;">
+	  </div>
+	  
+	  <div class="rzbottom">
+		  <div @click="to(1)" class="rzbottom-select1">
+			  <img src="img/14.png">
+			  <p>人居环境</p>
+		  </div>
+		  <div @click="to(2)" class="rzbottom-select2">
+		  			  <img src="img/12.png">
+		  			  <p>红黑榜</p>
+		  </div>
+		  <div class="rzbottom-select3">
+			 <img src="img/16.png" >
+			 <p>个人中心</p>
+		  </div>
+	  </div>
+	  
+  </div>
+</body>
+  <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="./js/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.5/lib/vant.min.js"></script>
+  <script>
+	 
+	document.body.addEventListener("focusout", () => {//软键盘收起的事件处理
+	  setTimeout(() => {
+	    const scrollHeight =document.documentElement.scrollTop || document.body.scrollTop || 0;window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+	  }, 100);
+	});
+    new Vue({
+      el: '#app',
+	  computed:{
+		id(){return localStorage.id},
+		getQueryString() { //获取顶部url参数
+			return function (name){
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+		        var r = window.location.search.substr(1).match(reg); 
+		        if (r != null) return unescape(r[2]); 
+		        return null; 
+			}
+		  },
+		  
+	  },
+      data: function() {
+        return {
+			date_url:'http://192.168.124.9',
+			// date_url:'',
+			databox:'',
+		}
+      },
+	  
+	  mounted() {
+		$('#meng').hide();
+	    if(localStorage.id){//判断是否实名认证
+			this.git_actmin();
+		}else{
+			//将微信授权登录的微信个人信息  赋值 localStorage.hhs = JSON.stringify(i);  取值 JSON.parse(localStorage.hhs)
+		}
+		
+	  },
+	  methods: {
+		tuo(){
+			vant.Toast('开发中...');
+		},
+		git_actmin(){
+			let params = {
+			   pop_id:localStorage.id
+			};
+			$.ajax({
+			  url:this.date_url+'/xf/point_mobile/personal_info',
+			  type: 'post',// 设置的是请求参数
+			  data:params,
+			  dataType:'json',
+			  success: (res)=> {
+				if(Object.prototype.toString.call(res) != '[object Object]'){res = JSON.parse(res)}
+				  if ( res.code === '200' ) {
+				  this.databox = res.data;
+					console.log(this.databox,'个人信息')
+				  
+				  } else if ( res.code === '300' ) {
+				    vant.Toast.fail(res.msg);
+				  }
+				    vant.Toast.clear();
+			  }
+			})
+		},
+		  
+		torenzheng(){
+			let id = this.getQueryString('house_id');
+			window.location.href = 'login.html?house_id='+id;
+		},
+		to(i){
+			let id = this.getQueryString('house_id');
+			window.location.href = i==1?'./index.html?house_id='+id:'./HHB.html?house_id='+id;
+		},
+		ji(){
+			let id = this.getQueryString('house_id');
+			window.location.href = 'shop.html?house_id='+id
+		},
+	    /**
+	     * 获取全部职位列表
+	     */
+	   //  getJobList() {
+		  // vant.Toast.loading({ message: '加载中...',forbidClick:true});
+	   //    let params = {
+	   //      page: this.page,
+	   //      size: this.size,
+	  	//     keyword:this.input3,
+	   //    };
+		  // $.ajax({
+		  //   url:this.date_url+'/zp/personal/get_all_job',
+		  //   type: 'post',
+		  //   // 设置的是请求参数
+		  //   data:params,
+		  //   dataType: 'json',
+		  //   success: (res)=> {
+		  // 	if(Object.prototype.toString.call(res) != '[object Object]'){res = JSON.parse(res)}
+		  // 	  if ( res.code === '200' ) {
+		  // 	  this.data = res.data;
+			 //  console.log(this.data,'职位数据')
+		  // 	  this.finished = res.count==this.data.length?true:false;
+		  // 	  // 加载状态结束
+		  // 	  this.loading = false;
+		  // 	  } else if ( res.code === '300' ) {
+		  // 	  	this.data = [];
+		  // 	    vant.Toast.fail(res.msg);
+		  // 	  }
+			 //   vant.Toast.clear();
+		  //   }
+		  // })
+	   //  },
+	    
+	  }
+    })
+  </script>
+  <style scoped="scoped">
+	  
+  	 
+  </style>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <!-- import CSS -->
+  <title>积分评价系统</title>
+  <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.5/lib/index.css">
+  
+  <style type="text/css">
+  	*{box-sizing: border-box;margin: 0;padding: 0;font-family:'PingFangSC-regular';}
+	html{background: rgba(248, 248, 248, 1);background:white;}
+	.HHBbox1{
+		width: 100%;
+		height: 1.36rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		background-color: #FFFFFF;
+		
+	}
+	.HHBbox2{
+		width: 100%;
+		/* height: 17.48rem; */
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		/* margin-top: 0.266666rem; */
+		background-color: #FFFFFF;
+		padding-bottom: 0.746666rem;
+	}
+	.title{
+		height: 0.786666rem;margin-left: 0.306666rem;margin-top: 0.346666rem;line-height:0.786666rem;
+	}
+	.title img{
+		width: 0.833333rem;
+		height: 0.833333rem;
+		/* margin-right: 0.173333rem; */
+		float: left;
+	}
+	.HHB{
+		width: 9.373333rem;
+		height: 1.52rem;
+		margin: 0.506666rem auto;
+		line-height: 0.266666rem;
+		border-radius: 0.106666rem;
+		background-color: #F7F7F7;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+	}
+	.HHB_r{
+		width: 4.68rem;
+		height: 1.52rem;
+		line-height: 0.266666rem;
+		border-radius: 0.106666rem;
+		background-color: #CE0B0B;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;float: left;
+		color: white;
+	}
+	.HHB_b{
+		width: 4.666666rem;
+		height: 1.52rem;
+		line-height: 0.266666rem;
+		border-radius: 0.106666rem;
+		background-color: #F7F7F7;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;float: left;
+	}
+	.news{
+		width: 9.213333rem;
+		height: 2.893333rem;
+		margin: 0.506666rem auto;
+		border-bottom: 0.013333rem solid #EEEEEE;
+	}
+	.rzbottom{
+		width: 100%;
+		height: 1.866666rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		box-shadow: 0px -0.066666rem 0.08rem 0px rgba(0, 0, 0, 0.07);
+		border: 0.013333rem solid rgba(255, 255, 255, 0);
+		background-color: #FFFFFF;
+		margin-top: 0.893333rem;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+	.rzbottom-select1{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 0.96rem;
+	}
+	.rzbottom-select1 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select1 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.rzbottom-select2{
+		width: 1.04rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.rzbottom-select2 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select2 p{
+		color: #F20000;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.rzbottom-select3{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.rzbottom-select3 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select3 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+  </style>
+</head>
+<body>
+   <div id="meng" style="width:100%;height:100%;position:fixed;z-index:200;background:rgba(255,255,255,0.98);top:0;left:0;text-align:center;">
+   	  <img style="width:1.333333rem;height:1.333333rem;margin-top:80%;" src="img/c4165dbea595b8cd5fe581cbe392deb3.gif" alt="">
+   </div>
+  <div id="app" style="padding-bottom: 1.866666rem;">
+      <!-- <div class="HHBbox1">
+		  <div style="width: 4.6rem;height: 0.826666rem;background-color: #CCCCCC;margin-left: 0.2rem;margin-top: 0.226666rem;"></div>
+	  </div> -->
+	  <div class="HHBbox2">
+		  <div class="title">
+			  <img src="img/微信图片_20200327094852.png" >
+			  <div style="font-weight: bold; width: 1.6rem;height: 0.786666rem;color: #101010;font-size: 0.533333rem;text-align: left;font-family: SourceHanSansSC-bold;float: left;">
+				  {{names}}
+			  </div>
+		  </div> 
+		  <div class="HHB">
+			<!-- <div class="HHB-r"> -->
+			<div @click="tabclick(0)" :class="{HHB_r:num==0,HHB_b:num==1}">
+				<div style="width: 3.52rem;height: 0.44rem;margin: 0.546666rem auto;">
+					<div style="margin-right: 0.106666rem;float: left;">
+						<img src="./img/san.png" style="width: 0.426666rem;height: 0.426666rem;"/>
+					</div>
+					<div style="margin-top: 0.066666rem; width: 2.986666rem;height: 0.44rem;font-size: 0.373333rem;text-align: center;font-family: SourceHanSansSC-regular;float: left;">
+						红榜（好人好事）
+					</div>
+				</div>
+			</div>
+			<div @click="tabclick(1)" :class="{HHB_b:num==0,HHB_r:num==1}">
+				<div style="width: 3.906666rem;height: 0.44rem;margin: 0.546666rem auto;">
+					<div style="margin-right: 0.106666rem;float: left;">
+						<img src="./img/san.png" style="width: 0.426666rem;height: 0.426666rem;"/>
+					</div>
+					<div style="margin-top: 0.066666rem; width: 3.36rem;height: 0.44rem;font-size: 0.373333rem;text-align: center;font-family: SourceHanSansSC-regular;float: left;">
+						黑榜（不道德行为）
+					</div>
+				</div>
+			</div>
+		  </div>
+		  
+		<!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多职位了" @load="onScrollBottom">  -->
+		  <div @click="toxiang(i)" class="news" v-for="i in databox">
+				<div style="font-weight: bold; width: 5.12rem;height: 0.626666rem;line-height: 0.626666rem; color: #101010;font-size: 0.426666rem;text-align: left;font-family: SourceHanSansSC-bold;">{{i.title}}</div>
+				<div style="height: 0.386666rem;margin-top: 0.146666rem;color: #999999;font-size: 0.266666rem;text-align: left;font-family:SourceHanSansSC-bold;">{{i.time.substr(0,10)}}</div>
+				<div class='pbox' style="">
+					{{GetChinese(i.content)}}
+				</div>
+		  </div>
+		  <p v-show="databox.length==0" style="text-align: center;color: rgba(138, 138, 138, 1);">没有数据</p>
+		<!-- </van-list> -->
+		  
+	  </div>
+	  <div class="rzbottom">
+	  		  <div @click="to(1)" class="rzbottom-select1">
+	  			  <img src="img/14.png">
+	  			  <p>人居环境</p>
+	  		  </div>
+	  		  <div class="rzbottom-select2">
+	  		  	<img src="img/09.png">
+	  		  	<p>红黑榜</p>
+	  		  </div>
+	  		  <div @click="to(3)" class="rzbottom-select3">
+	  			 <img src="img/17.png" >
+	  			 <p>个人中心</p>
+	  		  </div>
+	  </div>
+  </div>
+</body>
+  <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="./js/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.5/lib/vant.min.js"></script>
+  <script>
+	
+	document.body.addEventListener("focusout", () => {//软键盘收起的事件处理
+	  setTimeout(() => {
+	    const scrollHeight =document.documentElement.scrollTop || document.body.scrollTop || 0;window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+	  }, 100);
+	});
+    new Vue({
+      el: '#app',
+	  computed:{
+		getQueryString() { //获取顶部url参数
+			return function (name){
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+		        var r = window.location.search.substr(1).match(reg); 
+		        if (r != null) return unescape(r[2]); 
+		        return null; 
+			}
+		  },
+		  names(){return localStorage.group},
+		  //提取汉字
+		  GetChinese() { // eslint-disable-line
+		     return function(strValue){
+				if (strValue !== null && strValue !== '') {
+		        const reg = /[\u4e00-\u9fa5]/g;
+		        return strValue.match(reg).join('');
+		      }
+		      return ''; 
+			 }
+		   }
+	  },
+      data: function() {
+        return {
+			num:0,
+			date_url:'http://192.168.124.9',
+			// date_url:'',
+			databox:[],
+			finished:false,
+			loading:false,
+			page:1,
+		}
+      },
+	  
+	  mounted() {
+		$('#meng').hide();
+	    this.getJobList();
+	  },
+	  methods: {
+		 tabclick(i){//tab click
+			this.num = i;
+			this.getJobList();
+		 },
+		  
+		 to(i){
+			let id = this.getQueryString('house_id');
+		 	window.location.href = i==1?'./index.html?house_id='+id:'./me(rz).html?house_id='+id;
+		 },
+		 toxiang(i){
+			 let id = this.getQueryString('house_id');
+			 window.location.href = 'XQ.html?house_id='+id;
+			 localStorage.hhs = JSON.stringify(i);
+			 console.log(localStorage.hhs)
+		 },
+	    /**
+	     * 获取全部职位列表
+	     */
+	    getJobList() {
+		  vant.Toast.loading({ message: '加载中...',forbidClick:true});
+	      let params = {
+	        page: this.page,
+	        size: 6,
+	  	    type:this.num+1
+	      };
+		  $.ajax({
+		    url:this.date_url+'/xf/point_mobile/red_black_list',
+		    type: 'post',// 设置的是请求参数
+		    data:params,
+		    dataType:'json',
+		    success: (res)=> {
+		  	if(Object.prototype.toString.call(res) != '[object Object]'){res = JSON.parse(res)}
+		  	  if ( res.code === '200' ) {
+		  	  this.databox = res.data;
+			  console.log(this.databox,'职位数据')
+		  	  this.finished = res.count==this.databox.length?true:false;
+		  	  // 加载状态结束
+		  	  this.loading = false;
+		  	  } else if ( res.code === '300' ) {
+		  	  	this.databox = [];
+		  	    vant.Toast.fail(res.msg);
+		  	  }
+			   vant.Toast.clear();
+		    }
+		  })
+	    },
+	    
+	  }
+    })
+  </script>
+  <style scoped="scoped">
+	  .pbox{
+		  width: 9.213333rem;height: 1.093333rem;margin-top: 0.133333rem;line-height: 0.546666rem; color: #666666;font-size: 0.373333rem;text-align: justify;font-family: SourceHanSansSC-bold;
+	      display: -webkit-box;  
+	      		display: -moz-box;
+	      		overflow: hidden;
+	      		text-overflow: ellipsis;  
+	      		word-break: break-all;  
+	      		-webkit-box-orient: vertical;  
+	      		-webkit-line-clamp:2;
+	  }
+  	 
+  </style>
+</html>

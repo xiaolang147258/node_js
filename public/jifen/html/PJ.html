@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <!-- import CSS -->
+  <title>积分评价系统</title>
+  <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.5/lib/index.css">
+  <link rel="stylesheet" href="./css/topbox.css" type="text/css" />
+  <style type="text/css">
+  	*{box-sizing: border-box;margin: 0;padding: 0;font-family:'PingFangSC-regular';}
+	html{background: rgba(248, 248, 248, 1);}
+	.PJbox1{
+		width: 100%;
+		height: 4.48rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		margin-top: 0.266666rem;
+		background-color: #FFFFFF;
+	}
+	.PJbox2{
+		width: 100%;
+		height: 4.293333rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		margin-top: 0.266666rem;
+		background-color: #FFFFFF;
+	}
+	.PJbox3{
+		width: 100%;
+		height: 5.906666rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		border: 0.013333rem solid #FFFFFF;
+		margin-top: 0.266666rem;
+		background-color: #FFFFFF;
+	}
+	.PJbox4{
+		width: 100%;
+		height: 1.48rem;
+		color: #FFFFFF;
+		background-color: #226FE3;
+		line-height: 0.693333rem;
+		font-size: 0.48rem;
+		text-align: center;
+		font-family: Roboto;
+		margin-top: 0.64rem;
+		margin-bottom: 1.173333rem;
+		border: 0.013333rem solid #FFFFFF;
+	}
+	.PJbottom{
+		width: 100%;
+		height: 1.866666rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		box-shadow: 0px -0.066666rem 0.08rem 0px rgba(0, 0, 0, 0.07);
+		border: 0.013333rem solid rgba(255, 255, 255, 0);
+		background-color: #FFFFFF;
+		margin-top: 1.173333rem;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+	.PJbottom-select1{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 0.96rem;
+	}
+	.PJbottom-select1 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.PJbottom-select1 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.PJbottom-select2{
+		width: 1.04rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.PJbottom-select2 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.PJbottom-select2 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.PJbottom-select3{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.PJbottom-select3 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.PJbottom-select3 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+  </style>
+</head>
+<body>
+   <div id="meng" style="width:100%;height:100%;position:fixed;z-index:200;background:rgba(255,255,255,0.98);top:0;left:0;text-align:center;">
+   	  <img style="width:1.333333rem;height:1.333333rem;margin-top:80%;" src="img/c4165dbea595b8cd5fe581cbe392deb3.gif" alt="">
+   </div>
+  <div id="app" style="padding-bottom: 1.866666rem;">
+      
+      <div class="topbox">
+      		<div class="box1">
+      			<img v-if="active.logo" :src="active.logo" alt="">
+      			<img v-else src="./img/16.png" alt="">
+      			<div class="namebox">
+      				<div style="width: 1.44rem;height: 0.72rem;color: rgba(16,16,16,1);font-size: 0.48rem;font-weight: bold;">{{active.name}}</div>
+      				<div style="width: 2.173333rem;height: 0.48rem;color: rgba(102,102,102,1);font-size: 0.32rem;margin-top: 0.213333rem;">{{active.group_name}}&nbsp;&nbsp;{{active.house_number}}</div>
+      			</div>
+      		</div>
+      		<div class="box2">
+				<div style="width:1.7rem;text-align: center;color:#F7840B;font-size:0.35rem;height:100%;padding-top:2.5606666rem;float:left;margin-right:1.246666rem;">
+					{{active.indoor_hygiene_score}}分
+				</div>
+				<div style="width:2.52rem;text-align: center;color:rgba(253, 64, 64, 1);font-size:0.6rem;height:100%;padding-top:1.0rem;float:left;">
+					{{active.current_envir_score}}分
+				</div>
+				<div style="width:1.49rem;text-align: center;color:rgba(62, 198, 47, 1);font-size:0.35rem;height:100%;padding-top:2.5606666rem;float:right;">
+					{{active.outdoor_hygiene_score}}分
+				</div>
+      			
+      		</div>		
+      </div>
+	  
+	  <div class="PJbox1">
+		  <div style="height: 0.786666rem;color: #101010;font-size: 0.533333rem;text-align: left;font-family: SourceHanSansSC-bold;margin-left: 0.373333rem;margin-top: 0.266666rem;">
+			  卫生评分
+		  </div>
+		  <div style="height:0.73rem;line-height:0.73rem;color: #444444;font-size:0.426666rem;text-align: left;font-family: SourceHanSansSC-bold;margin-left: 1.186666rem;margin-top: 0.586666rem;">
+			  <p style="float:left;margin-right:0.453333rem;">屋内卫生</p><van-rate size='0.73rem' v-model="gitactive.indoor_hygiene_score" />
+		  </div>
+		  <div style="height: 0.73rem;line-height:0.73rem;color: #444444;font-size: 0.426666rem;text-align: left;font-family: SourceHanSansSC-bold;margin-left: 1.186666rem;margin-top: 0.64rem;">
+			 <p style="float:left;margin-right:0.453333rem;">屋外卫生</p><van-rate size='0.73rem' v-model="gitactive.outdoor_hygiene_score" />
+		  </div>
+	  </div>
+	  
+	  <div class="PJbox2">
+		  <div style="width: 3.626666rem;height: 0.786666rem;color: #101010;font-size: 0.533333rem;text-align: left;font-family: SourceHanSansSC-bold;margin-left: 0.373333rem;margin-top: 0.266666rem;line-height: 0.786666rem;">
+			  <div style="float: left;">拍照上传&nbsp;</div><div style="float: left;color: #666666;font-size: 0.373333rem;">(可选)</div>
+		  </div>
+		  <div style="width:100%;height: 100px;text-align:left;padding-left:0.4rem;margin-top:0.506666rem;">
+			  <van-uploader @delete='delect' :after-read="afterRead" v-model="fileList" multiple :max-count="4"/>
+		  </div>
+	  </div>
+	  
+	  <div class="PJbox3">
+		  <div style="width: 3.626666rem;height: 0.786666rem;color: #101010;font-size: 0.533333rem;text-align: left;font-family: SourceHanSansSC-bold;margin-left: 0.373333rem;margin-top: 0.266666rem;line-height: 0.786666rem;">
+		  			  <div style="float: left;">点评评语&nbsp;</div>
+		  			  <div style="float: left; color: #666666;font-size: 0.373333rem;">(可选)</div>
+		  </div>
+		  <textarea v-model="gitactive.comment"  rows="3" type='text' placeholder="输入您想说的内容" name="advice" style="line-height:0.6rem;font-size: 0.373333rem; padding-top: 0.333333rem;padding-left: 0.346666rem; width:9.24rem;height: 3.2rem;border: 0.013333rem solid #EEEEEE;margin-top: 0.32rem;"></textarea>
+		  
+	  </div>
+	  
+	  <div class="PJbox4">
+		  <div @click='git_act' style="margin: 0.333333rem auto;line-height: 0.693333rem;">提交打分</div>
+	  </div>
+				
+	  <div class="rzbottom">
+	  		  <div class="rzbottom-select1">
+	  			  <img  src="img/11.png">
+	  			  <p >人居环境</p>
+	  		  </div>
+	  		  <div @click="to(2)" class="rzbottom-select2">
+	  		  	 <img  src="img/12.png">
+	  		  	 <p >红黑榜</p>
+	  		  </div>
+	  		  <div @click="to(3)" class="rzbottom-select3">
+	  			 <img  src="img/17.png" >
+	  			 <p >个人中心</p>
+	  		  </div>
+	  </div>
+	 
+  </div>
+</body>
+  <script src="./js/vue.js"></script>
+  <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.5/lib/vant.min.js"></script>
+  <script>
+	document.body.addEventListener("focusout", () => {//软键盘收起的事件处理
+	  setTimeout(() => {
+	    const scrollHeight =document.documentElement.scrollTop || document.body.scrollTop || 0;window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+	  }, 100);
+	});
+	
+    new Vue({
+      el: '#app',
+	  computed:{
+		text() {
+		      return this.dat1 + '分'
+		},
+		getQueryString() { //获取顶部url参数
+			return function (name){
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+		        var r = window.location.search.substr(1).match(reg); 
+		        if (r != null) return unescape(r[2]); 
+		        return null; 
+			}
+		  },
+	  },
+      data: function() {
+        return {
+			date_url:'http://192.168.124.9',
+			// date_url:'',
+			currentRate:0,
+			dat1:40,
+			dat2:40,
+			dat3:40,
+			value:2,//打分
+			fileList:[],//图片
+			active:'',
+			gitactive:{
+				family_id:'',//被评价家庭ID
+				pop_id:'',//评价人id
+				indoor_hygiene_score:1,//屋内卫生分
+				outdoor_hygiene_score:1,//屋外卫生分
+				img_list:[],//图片
+				comment:'',//评语
+			},
+			
+		}
+      },
+	  
+	  mounted() {
+		  
+		$('#meng').hide();
+	    this.getJobList();
+	  },
+	  methods: {
+		to(i){
+			let id = this.getQueryString('house_id');
+			window.location.href = i==2?'./HHB.html?house_id='+id:'./me(rz).html?house_id='+id;
+		},
+		
+		git_act(){//提交数据
+		     this.gitactive.family_id = this.active.family_id;
+			 this.gitactive.pop_id = localStorage.id;
+			 this.gitactive.indoor_hygiene_score = this.gitactive.indoor_hygiene_score*20;
+			 this.gitactive.outdoor_hygiene_score = this.gitactive.outdoor_hygiene_score*20;
+			 this.gitactive.img_list = this.gitactive.img_list.join(',');
+			  vant.Toast.loading({ message: '加载中...',forbidClick:true});
+			  $.ajax({
+			    url:this.date_url+'/xf/point_mobile/score_family',
+			    type: 'post',data:this.gitactive,dataType: 'json',
+			    success: (res)=> {
+			  	if(Object.prototype.toString.call(res) != '[object Object]'){res = JSON.parse(res)}
+			  	  if ( res.code =='200' ) {
+			  	   vant.Toast.success('点评成功');
+			  	   window.setTimeout(()=>{
+			  	   		 history.go(-1)
+			  	   },1000)
+			  	  } else if ( res.code == '300' ) {
+					  this.activebox = [];
+			  	    vant.Toast.fail(res.msg);
+			  	  }
+				   // vant.Toast.clear();
+			    }
+			  })
+		},
+		
+		afterRead(file) {//上传图片事件
+			  vant.Toast.loading({ message: '加载中...',forbidClick:true});
+			  var formData = new FormData();
+			   formData.append('img',file.file);  //添加图片信息的参数
+			  $.ajax({
+			    url:this.date_url+'/xf/index/import_pic',
+				type:'post',
+				data:formData,
+				dataType:'json',
+			    processData: false,// 不处理数据
+			    contentType: false, // 不设置内容类型
+			    success: (res)=> {
+			  	if(Object.prototype.toString.call(res) != '[object Object]'){res = JSON.parse(res)}
+			  	  if ( res.code =='200' ) {
+					 this.gitactive.img_list.push(res.data[0])
+					 console.log(this.gitactive.img_list)
+			  	  } else if ( res.code == '300' ) {
+			  	    vant.Toast.fail(res.msg);
+			  	  }
+			  	  vant.Toast.clear();
+			    }
+			  })
+	     },
+		 delect(i,item){//删除图片事件
+			 this.gitactive.img_list.splice(item.index,1);
+			 console.log(this.gitactive.img_list)
+		 },
+	    /**
+	     * 获取全部职位列表
+	     */
+	    getJobList() {
+	      // vant.Toast.loading({ message: '加载中...',forbidClick:true});
+	      $.ajax({
+	        url:this.date_url+'/xf/point_mobile/family_point_detail?house_id='+this.getQueryString('house_id'),
+	        type: 'get',dataType: 'json',
+	        success: (res)=> {
+	      	if(Object.prototype.toString.call(res) != '[object Object]'){res = JSON.parse(res)}
+	      	  if ( res.code =='200' ) {
+	      	  this.active = res.data;
+	    	  localStorage.group = res.data.group_name
+	    	  console.log(this.active,'top数据')
+	      	  } else if ( res.code == '300' ) {
+	      	    vant.Toast.fail(res.msg);
+	      	  }
+	    	   // vant.Toast.clear();
+	        }
+	      })
+	    },
+	    
+	  }
+    })
+  </script>
+  <style scoped="scoped">
+	
+  	 
+  </style>
+</html>

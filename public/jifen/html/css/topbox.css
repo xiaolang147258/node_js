@@ -1,0 +1,205 @@
+.toplogo{
+	width:100%;
+	height: 1.36rem;
+	background: white;
+	/* background: url(../img/san.png); */
+	background-size:100% 100%;background-repeat:no-repeat;
+	margin-bottom:0.266666rem;
+}
+.huanbox1{
+	width:2.133333rem;
+	height:100%;
+	float:left;
+	margin-right:0.75rem;
+	padding-top:0.666666rem;
+	text-align: center;
+}
+.huanbox1 p{
+	font-size:0.32rem;
+	color:rgba(102, 102, 102, 1);
+	margin-top:0.32rem;
+}
+.huanbox2{
+	width:2.666666rem;
+	height:100%;
+	float:left;
+	padding-top:0.4rem;
+	text-align: center;
+}
+.huanbox2 p{
+	font-size:0.373333rem;
+	color:rgba(102, 102, 102, 1);
+	font-weight:bold;
+	margin-top:0.2rem;
+}
+.huanbox3{
+	width:2.133333rem;
+	height:100%;
+	float:right;
+	padding-top:0.666666rem;
+	text-align: center;
+}
+.huanbox3 p{
+	font-size:0.32rem;
+	color:rgba(102, 102, 102, 1);
+	margin-top:0.32rem;
+}
+.topbox{
+	width:100%;margin-bottom:0.266666rem;
+	padding:1.573333rem 0.4rem 0.693333rem 0.4rem;
+	background: url(../img/26.png);
+	background-size:100% 100%;background-repeat:no-repeat;
+}
+.box1{
+	width:100%;
+	height: 2.24rem;
+	border-bottom:0.013333rem solid rgba(238, 238, 238, 1);
+	background-color: #FFFFFF;
+	border-radius: 0.106666rem;
+	/* margin-top: 1.573333rem; */
+	box-shadow: 0rem 0.066666rem 0.133333rem 0rem #272E84;
+}
+.box1 img{
+	width: 1.786666rem;
+	height: 1.786666rem;
+	border-radius: 0.106666rem;
+	border: 0.013333rem solid rgba(240, 240, 240, 1);
+	float:left;
+	margin:0.28rem;
+	
+}
+.namebox{
+	width: 2.173333rem;
+	height: 1.786666rem;
+	float: left;
+	/* margin-left: 0.306666rem; */
+	text-align: left;
+	margin-top: 0.346666rem;
+}
+.dfbox{
+	width: 2.506666rem;
+	height: 0.96rem;
+	float:right;
+	margin-right:0.613333rem;
+	/* margin-left: 1.973333rem; */
+	background-color: #0069F2;
+	border-radius: 93px;
+	font-size: 0.373333rem;color: rgba(255,255,255,1);
+	text-align: center;
+	line-height: 0.946666rem;
+	margin-top: 0.626666rem;
+	border: 0.013333rem solid rgba(255,255,255,0);
+	box-shadow: 0px 0.026666rem 0.226666rem 0.026666rem rgba(2,12,253,0.2);
+}
+.box2{
+	width:100%;
+	height:4.333333rem;
+	line-height: 20px;
+	border-radius: 6px;
+	text-align: center;
+	box-shadow: 0px 5px 10px 0px rgba(39,46,132,0.4);
+	border: 1px solid rgba(255,255,255,0);
+	background-color: #FFFFFF;
+	margin-top: 0.266666rem;
+	padding: 0 0.42rem;
+	background: url(../img/20200402110155.png);
+	background-size:100% 100%;background-repeat:no-repeat;
+}
+.p1{
+	width: 1.92rem;
+	height: 0.346666rem;
+	margin-left: 0.493333rem;
+	margin-top: 3.12rem;
+	color: rgba(102,102,102,1);
+	font-size: 0.32rem;
+	text-align: left;
+	float: left;
+}
+.p2{
+	width: 2.613333rem;
+	height: 0.546666rem;
+	margin-left: 0.92rem;
+	margin-top: 3.266666rem;
+	color: rgb(102,102,102,1);
+	font-size: 0.373333rem;
+	text-align: left;
+	float: left;
+}
+.p3{
+	width: 1.92rem;
+	height: 0.346666rem;
+	margin-left: 0.973333rem;
+	margin-top: 3.12rem;
+	color: rgba(102,102,102,1);
+	font-size: 0.32rem;
+	text-align: left;
+	float: left;
+}
+.rzbottom{
+		width: 100%;
+		height: 1.866666rem;
+		line-height: 0.266666rem;
+		text-align: center;
+		box-shadow: 0px -0.066666rem 0.08rem 0px rgba(0, 0, 0, 0.07);
+		border: 0.013333rem solid rgba(255, 255, 255, 0);
+		background-color: #FFFFFF;
+		margin-top: 2.56rem;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+
+.rzbottom-select1{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 0.96rem;
+	}
+	.rzbottom-select1 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select1 p{
+		color: #F20000;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.rzbottom-select2{
+		width: 1.04rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.rzbottom-select2 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select2 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
+	.rzbottom-select3{
+		width: 1.386666rem;
+		height: 1.653333rem;
+		float: left;
+		margin-top: 0.2rem;
+		margin-left: 2.133333rem;
+	}
+	.rzbottom-select3 img{
+		width: 0.933333rem;
+		height: 0.933333rem;
+		margin: 0 auto;
+	}
+	.rzbottom-select3 p{
+		color: #666666;
+		font-size: 0.346666rem;
+		margin-top:0.093333rem;
+		font-family: PingFangSC-regular;
+	}
